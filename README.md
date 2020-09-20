@@ -5,7 +5,7 @@ Group members (3-5) (no Student IDs, only names):
 1. Nicolas Belair (NicolasBelair)
 2. Kevin Chandra (Sclatch)
 3. Group Member3 (github_username3)
-4. Group Member4 (github_username4)
+4. Hayden Murray (HaydenTLM)
 5. Group Member5 (github_username5)
 
 ## Overview

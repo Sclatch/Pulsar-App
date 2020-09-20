@@ -4,7 +4,7 @@ The starter code for the major group project.
 Group members (3-5) (no Student IDs, only names):
 1. Nicolas Belair (NicolasBelair)
 2. Kevin Chandra (Sclatch)
-3. Matthew Vrban (github_username3)
+3. Matthew Vrban (matthewvrban2000)
 4. Hayden Murray (HaydenTLM)
 
 ## Overview

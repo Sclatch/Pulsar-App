@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../model/userSettings.dart';
 import '../model/userSettingsModel.dart';
 
+import '../widgets/pulse.dart';
+
 class MainFeedWidget extends StatefulWidget {
   MainFeedWidget({Key key, this.title}) : super(key: key);
 
@@ -31,12 +33,17 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
             return ListView.builder(
               padding: const EdgeInsets.all(8.0),
-              itemCount: userSettings.length,
+              itemCount: 6, //DEBUGGING PURPOSES. BELOW IS THE ORIGINAL
+              //itemCount: userSettings.length,
               itemBuilder: (BuildContext context, int index) {
+
+                return pulseCard(context, index);
+
+                /*
                 return ListTile(
                   title: Text('${userSettings[index].fontSize}'),
                   subtitle: Text('${userSettings[index].showImages}'),
-                );
+                */
               },
             );
           } else {

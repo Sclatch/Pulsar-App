@@ -9,6 +9,7 @@ import 'views/main_feed.dart';
 import 'views/search_view.dart';
 import 'views/send_pulse.dart';
 import 'views/notification_view.dart';
+import 'views/messagePage.dart';
 
 import 'widgets/drawer_menu.dart';
 import 'widgets/bottomNavigation.dart';
@@ -70,7 +71,7 @@ class _MainPageState extends State<MainPage> {
       SearchView(),
       SendPulse(),
       NotificationPage(),
-      MainFeedWidget()
+      MessagePage()
     ];
 
     return Scaffold(

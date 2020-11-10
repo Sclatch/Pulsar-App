@@ -20,30 +20,41 @@ class _NotificationPageState extends State<NotificationPage> {
         itemBuilder: (BuildContext context, int index) {
           return Container(
             color: Colors.grey[900],
-            child: ListTile(
-              //AVATAR
-              leading: CircleAvatar(
-                radius: 35.0,
-                backgroundColor: Colors.blueGrey
-              ),
-              //MORE OPTIONS
-              trailing: Material(
-                color: Colors.transparent, //DO NOT REMOVE THIS. OTHERWISE THE SPLASH WONT SHOW
-                  child: IconButton(
-                  icon: Icon(
-                    Icons.more_vert,
-                    size: 20,
+            child: GestureDetector (
+              child: ListTile(
+                //AVATAR
+                leading: CircleAvatar(
+                  radius: 35.0,
+                  backgroundColor: Colors.blueGrey
+                ),
+                //MORE OPTIONS
+                trailing: Material(
+                  color: Colors.transparent, //DO NOT REMOVE THIS. OTHERWISE THE SPLASH WONT SHOW
+                    child: IconButton(
+                    icon: Icon(
+                      Icons.more_vert,
+                      size: 20,
+                    ),
+                    splashRadius: 15,
+                    onPressed: () {
+                      //ADD DELETE FUNCTION HERE
+                    }
+                  )
+                ),
+                //TEXTS
+                title: Text(
+                  "Username",
+                  style: TextStyle(
+                    fontSize: 18
                   ),
-                  splashRadius: 15,
-                  onPressed: () {
-                    //ADD DELETE FUNCTION HERE
-                  }
-                )
+                ),
+                subtitle: Text("Notification Text")
               ),
-              //TEXTS
-              title: Text("Username"),
-              subtitle: Text("Notification Text")
-            )
+              onTap: () {
+                print("Expand which pulse");
+                //EXPAND FUNCTION HERE
+              },
+            ),
           );
         },
       )

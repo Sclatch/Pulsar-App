@@ -10,6 +10,9 @@ class SendPulse extends StatefulWidget {
 }
 
 class _SendPulseState extends State<SendPulse> {
+
+  String pulse = "";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,8 +45,21 @@ class _SendPulseState extends State<SendPulse> {
             ),
             maxLines: 6,
             //PLEASE WRITE THE FUNCTION HERE TO RETURN THE VALUE
-
-          )
+            onChanged: (value) {},
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 10),
+            width: 325,
+            child: RaisedButton(
+              child: Text(
+                "Send",
+                style: TextStyle(fontSize: 20),
+              ),
+              onPressed: () {
+                print("Send something");
+              },
+            )
+          ),
         ],
       )
     );

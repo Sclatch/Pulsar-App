@@ -34,14 +34,15 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
               itemCount: userSettings.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  //tileColor: Colors.white,
                   title: Text('${userSettings[index].fontSize}'),
                   subtitle: Text('${userSettings[index].showImages}'),
                 );
               },
             );
           } else {
-            return Text("Plz Wait");
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         });
   }

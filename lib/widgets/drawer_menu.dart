@@ -4,14 +4,14 @@ import '../main.dart';
 Widget drawerMenu() {
   return Drawer(
     child: Container(
-      padding: const EdgeInsets.only(top: 30),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          //HEADER DRAWER. USER PROFILE
           Container(
             padding: EdgeInsets.only(left: 15, bottom: 15),
-            height: 150,
+            height: 175,
             width: 500,
             color: Colors.lightBlue,
             child: Row(
@@ -24,18 +24,20 @@ Widget drawerMenu() {
                 ),
                 SizedBox(width: 12),
                 Text(
-                  "username",
+                  "Anonymous",
                   textScaleFactor: 1.5,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 )
               ]
             ),
           ),
+          SizedBox(height: 15),
+          //PROFILE BUTTON
           FlatButton(
             splashColor: Colors.lightBlue,
             onPressed: () {print("POP TO PROFILE");},
             child: Container(
-              height: 65,
+              height: 60,
               child: Row(
                 children: <Widget>[
                   Icon(
@@ -51,11 +53,12 @@ Widget drawerMenu() {
               )
             ),
           ),
+          //SETTINGS BUTTON
           FlatButton(
             splashColor: Colors.lightBlue,
             onPressed: () {print("POP TO MENU");},
             child: Container(
-              height: 50,
+              height: 60,
               child: Row(
                 children: <Widget>[
                   Icon(
@@ -65,6 +68,27 @@ Widget drawerMenu() {
                   SizedBox(width: 15.0),
                   Text(
                     "Settings",
+                    textScaleFactor: 1.30,
+                  )
+                ]
+              )
+            ),
+          ),
+          //ABOUT BUTTON
+          FlatButton(
+            splashColor: Colors.lightBlue,
+            onPressed: () {print("POP TO ABOUT");},
+            child: Container(
+              height: 60,
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.error,
+                    size: 30.0
+                  ),
+                  SizedBox(width: 15.0),
+                  Text(
+                    "About",
                     textScaleFactor: 1.30,
                   )
                 ]

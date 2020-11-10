@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Pulsar/model/userSettings.dart';
+import 'model/userSettings.dart';
 import 'model/userSettingsModel.dart';
 
 import 'views/updateSettings.dart';
 import 'views/main_feed.dart';
-import 'views/drawer_menu.dart';
+import 'views/search_view.dart';
+import 'views/send_pulse.dart';
+import 'views/notification_view.dart';
+
+import 'widgets/drawer_menu.dart';
+import 'widgets/bottomNavigation.dart';
 
 void main() {
   runApp(
@@ -30,6 +35,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.lightBlue,
         toggleableActiveColor: Colors.lightBlue,
         splashColor: Colors.lightBlueAccent,
+        textSelectionHandleColor: Colors.lightBlue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MainPage(title: 'Pulsar'),
@@ -58,6 +64,15 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    List<Widget> options = <Widget>[
+      MainFeedWidget(),
+      SearchView(),
+      SendPulse(),
+      NotificationPage(),
+      MainFeedWidget()
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -75,48 +90,12 @@ class _MainPageState extends State<MainPage> {
         ],
       ),
       drawer: drawerMenu(),
-      body: MainFeedWidget(),
+      body: options[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              size: 30
-            ),
-            title: Text("Dashboard")
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.search,
-              size: 30
-            ),
-            title: Text("Search Keyword")
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add_circle_outline,
-              size: 40
-            ),
-            title: Text("Send a Pulse")
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.notifications,
-              size: 30
-            ),
-            title: Text("Notifications")
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.mail,
-              size: 30
-            ),
-            title: Text("Direct Messages")
-          ),
-        ],
+        items: bottomNavigation(),
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.lightBlue,
         onTap: (int index) {

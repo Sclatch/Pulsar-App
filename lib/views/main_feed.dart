@@ -34,7 +34,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
               itemCount: userSettings.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  tileColor: Colors.white,
+                  //tileColor: Colors.white,
                   title: Text('${userSettings[index].fontSize}'),
                   subtitle: Text('${userSettings[index].showImages}'),
                 );

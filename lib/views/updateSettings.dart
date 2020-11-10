@@ -34,7 +34,7 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
         child: Column(
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width * 0.18,
@@ -66,7 +66,7 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
               ],
             ),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width * 0.18,

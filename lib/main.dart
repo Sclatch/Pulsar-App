@@ -6,6 +6,7 @@ import 'model/userSettingsModel.dart';
 
 import 'views/updateSettings.dart';
 import 'views/main_feed.dart';
+import 'views/drawer_menu.dart';
 
 void main() {
   runApp(
@@ -24,7 +25,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pulsar',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+        primarySwatch: Colors.lightBlue,
+        accentColor: Colors.lightBlue,
+        toggleableActiveColor: Colors.lightBlue,
+        splashColor: Colors.lightBlueAccent,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MainPage(title: 'Pulsar'),
@@ -48,11 +53,20 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Center(
+          child: Image.asset(
+            'lib/assets/scaffoldText.png',
+            width: 150,
+            height: 150
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
@@ -60,9 +74,61 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
+      drawer: drawerMenu(),
       body: MainFeedWidget(),
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              size: 30
+            ),
+            title: Text("Dashboard")
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.search,
+              size: 30
+            ),
+            title: Text("Search Keyword")
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_circle_outline,
+              size: 40
+            ),
+            title: Text("Send a Pulse")
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.notifications,
+              size: 30
+            ),
+            title: Text("Notifications")
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.mail,
+              size: 30
+            ),
+            title: Text("Direct Messages")
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.lightBlue,
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+      ),
     );
   }
+
+
 
   Future<void> _updateUserSettings() async {
     var userSettings =

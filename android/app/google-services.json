@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "255151894740",
+    "firebase_url": "https://pulsarcsci4100.firebaseio.com",
+    "project_id": "pulsarcsci4100",
+    "storage_bucket": "pulsarcsci4100.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255151894740:android:b4419b20f397d8275b0b41",
+        "android_client_info": {
+          "package_name": "com.example.Pulsar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255151894740-pdvnsud9oaoccfm2ei1p51k3d3o5vmaj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdEG4GbFOIz3-IRuXMfhNZRpwS-C88Qhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255151894740-pdvnsud9oaoccfm2ei1p51k3d3o5vmaj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

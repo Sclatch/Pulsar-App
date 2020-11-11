@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'model/userSettings.dart';
 import 'model/userSettingsModel.dart';
@@ -28,25 +29,38 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pulsar',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.lightBlue,
-        accentColor: Colors.lightBlue,
-        toggleableActiveColor: Colors.lightBlue,
-        splashColor: Colors.lightBlueAccent,
-        textSelectionHandleColor: Colors.lightBlue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MainPage(title: 'Pulsar'),
-      routes: <String, WidgetBuilder>{
-        '/updateUserSettings': (BuildContext context) =>
-            UpdateUserSettingsWidget(title: 'Update User Settings'),
-        '/mainFeed': (BuildContext context) =>
-            MainFeedWidget(title: 'Main Feed'),
-      },
-    );
+    return FutureBuilder(
+        future: Firebase.initializeApp(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            print('Error initializing firebase');
+            return Text('Error initializing firebase');
+          }
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            return MaterialApp(
+              title: 'Pulsar',
+              theme: ThemeData(
+                brightness: Brightness.dark,
+                primarySwatch: Colors.lightBlue,
+                accentColor: Colors.lightBlue,
+                toggleableActiveColor: Colors.lightBlue,
+                splashColor: Colors.lightBlueAccent,
+                textSelectionHandleColor: Colors.lightBlue,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+              ),
+              home: MainPage(title: 'Pulsar'),
+              routes: <String, WidgetBuilder>{
+                '/updateUserSettings': (BuildContext context) =>
+                    UpdateUserSettingsWidget(title: 'Update User Settings'),
+                '/mainFeed': (BuildContext context) =>
+                    MainFeedWidget(title: 'Main Feed'),
+              },
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        });
   }
 }
 
@@ -60,12 +74,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-
     List<Widget> options = <Widget>[
       MainFeedWidget(),
       SearchView(),
@@ -77,11 +89,8 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Image.asset(
-            'lib/assets/scaffoldText.png',
-            width: 150,
-            height: 150
-          ),
+          child: Image.asset('lib/assets/scaffoldText.png',
+              width: 150, height: 150),
         ),
         actions: <Widget>[
           IconButton(
@@ -108,8 +117,6 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-
-
   Future<void> _updateUserSettings() async {
     var userSettings =
         await Navigator.pushNamed(context, '/updateUserSettings');
@@ -124,6 +131,6 @@ class _MainPageState extends State<MainPage> {
 
     setState(() {});
 
-    print("Update called: ${newUserSettings}");
+    print("Update called: $newUserSettings");
   }
 }

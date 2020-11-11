@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'posts.dart';
 
-class PostModel {
+class PostsModel {
   Future<void> insertPost(Post post) async {
     return await FirebaseFirestore.instance
         .collection('posts')
@@ -33,6 +33,10 @@ class PostModel {
 
   Future<QuerySnapshot> getAllPosts() async {
     return await FirebaseFirestore.instance.collection('posts').get();
+  }
+
+  Stream<QuerySnapshot> streamAllPosts() {
+    return FirebaseFirestore.instance.collection('posts').snapshots();
   }
 
   Future<DocumentSnapshot> getPost(String id) async {

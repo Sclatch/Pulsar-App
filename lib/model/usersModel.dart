@@ -35,6 +35,10 @@ class UserModel {
     return await FirebaseFirestore.instance.collection('users').get();
   }
 
+  Stream<QuerySnapshot> streamAllUsers() {
+    return FirebaseFirestore.instance.collection('users').snapshots();
+  }
+
   Future<DocumentSnapshot> getUser(String id) async {
     return await FirebaseFirestore.instance.collection('users').doc(id).get();
   }

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'comments.dart';
 
-class CommentModel {
+class CommentsModel {
   Future<void> insertComment(Comment comment) async {
     return await FirebaseFirestore.instance
         .collection('comments')
@@ -33,6 +33,10 @@ class CommentModel {
 
   Future<QuerySnapshot> getAllComments() async {
     return await FirebaseFirestore.instance.collection('comments').get();
+  }
+
+  Stream<QuerySnapshot> streamAllComments() {
+    return FirebaseFirestore.instance.collection('comments').snapshots();
   }
 
   Future<DocumentSnapshot> getComment(String id) async {

@@ -40,7 +40,7 @@ Widget pulseCard(BuildContext context, int index) {
                           SizedBox(height: 7),
                           //CONTENT OF PULSE
                           Container(
-                            width: 270,
+                            width: MediaQuery.of(context).size.width * 0.60,
                             child: Text(
                               "Longagagagagagagagagagagagagagagagagagagagagagagagagagagagagagagagaga",
                               style: TextStyle(

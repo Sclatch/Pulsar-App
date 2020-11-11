@@ -37,8 +37,9 @@ class _SearchViewState extends State<SearchView> {
           ),
           //LISTVIEW OF THE RETURNED RESULT
           Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             width: MediaQuery.of(context).size.width,
-            height: 550,
+            height: MediaQuery.of(context).size.height * 0.71,
             child: ListView.builder(
               itemCount: 4,
               itemBuilder: (BuildContext context, int index) {

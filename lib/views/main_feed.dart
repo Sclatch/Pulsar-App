@@ -73,7 +73,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
                         print(user);
 
-                        return pulseCard(context, index, post);
+                        return pulseCard(context, index, post, user);
                       } else {
                         return Center(
                           child: CircularProgressIndicator(),

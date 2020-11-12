@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/pulse.dart';
 import '../model/postsModel.dart';
 import '../model/posts.dart';
+import '../model/commentsModel.dart';
+import '../model/users.dart';
 
 class SearchView extends StatefulWidget {
   SearchView({Key key, this.title}) : super(key: key);
@@ -59,9 +61,13 @@ class _SearchViewState extends State<SearchView> {
                           final post = Post.fromMap(postDocument.data(),
                               reference: postDocument.reference);
 
+                          //need to change this to pull the proper User data
+                          final user = User.fromMap(postDocument.data(),
+                              reference: postDocument.reference);
+
                           print(post);
 
-                          return pulseCard(context, index, post);
+                          return pulseCard(context, index, post, user);
                         });
                   } else {
                     return Center(

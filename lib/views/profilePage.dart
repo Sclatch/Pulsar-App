@@ -1,10 +1,7 @@
 import 'package:Pulsar/widgets/pulse.dart';
 import 'package:flutter/material.dart';
-import 'package:Pulsar/model/postsModel.dart';
 import 'package:provider/provider.dart';
 import '../model/posts.dart';
-import '../model/postsModel.dart';
-import '../model/userSettingsModel.dart';
 import '../model/users.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -20,10 +17,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-
-    final UserSettingsModel userSettingsModel =
-        context.watch<UserSettingsModel>();
-    final PostsModel postsModel = PostsModel();
+    final User user =
+        context.watch<User>();
+    //final PostsModel postsModel = PostsModel();
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
@@ -49,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           SizedBox(height: 10),
-          Text(use,
+          Text(user.username,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 35
@@ -58,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             height: 100,
-            child: Text("Username Description longagagagagagagagagagagagagagagagagagagagagagagagagagagagagagagagagaga",
+            child: Text(user.username + user.description,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 17
@@ -72,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: ListView.builder(
               itemCount: 4,
               itemBuilder: (BuildContext context, int index) {
-                return pulseCard(context, index, post);
+                return pulseCard(context, index, Post(), user);
               },
             )
           )

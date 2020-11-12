@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../model/posts.dart';
 import '../model/postsModel.dart';
+import '../model/users.dart';
 
-Widget pulseCard(BuildContext context, int index, Post post) {
+Widget pulseCard(BuildContext context, int index, Post post, User user) {
   bool _isDislike = false;
   bool _isLike = false;  
   PostsModel model = new PostsModel();

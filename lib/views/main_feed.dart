@@ -88,7 +88,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                           }
                         });
                   } else {
-                    return Center (
+                    return Center(
                       child: CircularProgressIndicator(),
                     );
                   }

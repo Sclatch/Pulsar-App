@@ -88,11 +88,15 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                           }
                         });
                   } else {
-                    return Text("Plz Wait");
+                    return Center (
+                      child: CircularProgressIndicator(),
+                    );
                   }
                 });
           } else {
-            return Text("Plz Wait");
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         });
   }

@@ -1,7 +1,9 @@
+import 'package:Pulsar/views/aboutPage.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
 
-Widget drawerMenu() {
+import '../views/profilePage.dart';
+
+Widget drawerMenu(BuildContext context) {
   return Drawer(
     child: Container(
       child: Column(
@@ -35,7 +37,9 @@ Widget drawerMenu() {
           //PROFILE BUTTON
           FlatButton(
             splashColor: Colors.lightBlue,
-            onPressed: () {print("POP TO PROFILE");},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ProfilePage()));
+            },
             child: Container(
               height: 60,
               child: Row(
@@ -77,7 +81,9 @@ Widget drawerMenu() {
           //ABOUT BUTTON
           FlatButton(
             splashColor: Colors.lightBlue,
-            onPressed: () {print("POP TO ABOUT");},
+            onPressed: () {Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AboutPage()));
+            },
             child: Container(
               height: 60,
               child: Row(
@@ -98,5 +104,5 @@ Widget drawerMenu() {
         ],
       )
     )
-  );
+  ); 
 }

@@ -19,7 +19,7 @@ List<BottomNavigationBarItem> bottomNavigation() {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.add_circle_outline,
-              size: 40
+              size: 30
             ),
             title: Text("Send a Pulse")
           ),
@@ -30,6 +30,7 @@ List<BottomNavigationBarItem> bottomNavigation() {
             ),
             title: Text("Notifications")
           ),
+          /*
           BottomNavigationBarItem(
             icon: Icon(
               Icons.mail,
@@ -37,5 +38,6 @@ List<BottomNavigationBarItem> bottomNavigation() {
             ),
             title: Text("Direct Messages")
           ),
+          */
         ];
 }

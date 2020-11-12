@@ -83,7 +83,7 @@ class _MainPageState extends State<MainPage> {
       SearchView(),
       SendPulse(),
       NotificationPage(),
-      MessagePage()
+      //MessagePage()
     ];
 
     return Scaffold(
@@ -99,7 +99,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
-      drawer: drawerMenu(),
+      drawer: drawerMenu(context),
       body: options[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,

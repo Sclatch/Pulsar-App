@@ -40,53 +40,61 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
           if (snapshot.hasData) {
             List posts = snapshot.data.docs;
 
-            //This is just to show the first instance of the posts
-            DocumentSnapshot postDocument = posts[0];
-
-            //This takes a post from the database and makes it an instance of post
-
-            final post = Post.fromMap(postDocument.data(),
-                reference: postDocument.reference);
-
-            print(post);
-
             //This is how you access a specific comments in a post
 
+            return ListView.builder(
+              padding: const EdgeInsets.all(8.0),
+              itemCount: posts.length,
+              itemBuilder: (BuildContext context, int index) {
+                //This is just to show the first instance of the posts
+                DocumentSnapshot postDocument = posts[index];
+
+                //This takes a post from the database and makes it an instance of post
+
+                final post = Post.fromMap(postDocument.data(),
+                    reference: postDocument.reference);
+
+                print(post);
+
+                return pulseCard(context, index);
+
+                return StreamBuilder(
+                    stream: commentsModel.streamAllComments(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List comments = snapshot.data.docs;
+
+                        return ListView.builder(
+                            itemCount: comments.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              DocumentSnapshot commentDocument =
+                                  comments[index];
+
+                              //This takes a comment from the post and makes it an instance of comment
+
+                              final comment = Comment.fromMap(
+                                  commentDocument.data(),
+                                  reference: commentDocument.reference);
+
+                              print(comment);
+                            });
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    });
+              },
+            );
+
+            //This is how you can get the User Settings
             return FutureBuilder(
-                future: commentsModel.getComment(post.comments[0]),
+                future: userSettingsModel.getAllUserSettings(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    DocumentSnapshot commentDocument = snapshot.data;
-
-                    //This takes a comment from the post and makes it an instance of comment
-
-                    final comment = Comment.fromMap(commentDocument.data(),
-                        reference: commentDocument.reference);
-
-                    print(comment);
-
-                    return ListView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      itemCount: 6,
-                      itemBuilder: (BuildContext context, int index) {
-                        return pulseCard(context, index);
-                      },
-                    );
-
-                    //This is how you can get the User Settings
-                    return FutureBuilder(
-                        future: userSettingsModel.getAllUserSettings(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            List<UserSettings> userSettings = snapshot.data;
-                            print(userSettings[0]);
-                            return Text("$userSettings");
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        });
+                    List<UserSettings> userSettings = snapshot.data;
+                    print(userSettings[0]);
+                    return Text("$userSettings");
                   } else {
                     return Center(
                       child: CircularProgressIndicator(),

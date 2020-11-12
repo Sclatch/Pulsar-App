@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AboutPage extends StatelessWidget {
 
-  String _aboutText =  "This app is made by 4 people: \n Hayden, Kevin, Matthew, Nicolas. \n For CSCI4100 project blabalbalbalbalbalbalbal";
+  final String _aboutText =  "This app is made by 4 people: \n Hayden, Kevin, Matthew, Nicolas. \n For CSCI4100 project blabalbalbalbalbalbalbal";
 
   @override
   Widget build(BuildContext context) {

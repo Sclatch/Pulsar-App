@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import '../model/postsModel.dart';
+import '../model/posts.dart';
 
 Widget pulseCard(BuildContext context, int index) {
+  bool _isDislike = false;
+  bool _isLike = false;
+  PostsModel postModel = new PostsModel();
   return Container(
     padding: const EdgeInsets.all(5),
     child: Column(
@@ -107,9 +112,34 @@ Widget pulseCard(BuildContext context, int index) {
             children: <Widget>[
               //LIKE
               IconButton(
-                icon: Icon(Icons.thumb_up),
+                icon: Icon(Icons.thumb_up, color: (_isLike) ? 
+                          Color(0xff007397) : Color(0xffffffff)),
                 splashRadius: 20,
-                onPressed: () {print("KEEP ON KEEPING ON");}
+                onPressed: () {
+                  /*setState(() {
+                  });*/
+                  print("KEEP ON KEEPING ON");
+                  
+                  Post post = postModel.postFromSnapshot(index.toString());
+                  if(_isLike = false) {
+                    //adjust likes
+                    if(_isDislike = true) {
+                      post.likes+=2;
+                    }
+                    else {
+                      post.likes++;
+                    }
+                    //set like state
+                    _isDislike = false;
+                    _isLike = true;
+                  }
+                  else {
+                    //adjust likes and like state
+                    post.likes--;
+                    _isLike = false;
+                  }
+                  postModel.updatePost(post);
+                }
               ),
               //COMMENT
               GestureDetector(
@@ -126,10 +156,35 @@ Widget pulseCard(BuildContext context, int index) {
               ),
               //DISLIKE
               IconButton(
-                icon: Icon(Icons.thumb_down),
+                icon: Icon(Icons.thumb_down, color:(_isDislike) ?
+                          Color(0xff007397) : Color(0xffffffff)),
                 splashRadius: 20,
                 splashColor: Colors.purple,
-                onPressed: () {print("MEH");},
+                onPressed: () {
+                  /*setState(() {
+                  });*/
+                  print("MEH");
+
+                  Post post = postModel.postFromSnapshot(index.toString());
+                  if(_isDislike = false) {
+                    //adjust likes
+                    if(_isLike = true) {
+                      post.likes-=2;
+                    }
+                    else {
+                      post.likes--;
+                    }
+                    //set like state
+                    _isLike = false;
+                    _isDislike = true;
+                  }
+                  else {
+                    //adjust likes and like state
+                    post.likes++;
+                    _isDislike = false;
+                  }
+                  postModel.updatePost(post);
+                },
               )
             ]
           ),

@@ -24,7 +24,10 @@ Widget pulseCard(BuildContext context, int index) {
                         backgroundColor: Colors.blueGrey
                       ),
                       //ADD NAVIGATE HERE
-                      onTap: (){print("GO TO THAT USER PROFILE");},
+                      onTap: (){
+                        print("GO TO THAT USER PROFILE");
+                        Navigator.pushNamed(context, '/userProfile');
+                        },
                     ),
                     SizedBox(width: 10),
                     //PROFILE HEADER & PULSE
@@ -47,7 +50,7 @@ Widget pulseCard(BuildContext context, int index) {
                           Container(
                             width: MediaQuery.of(context).size.width * 0.60,
                             child: Text(
-                              "Longagagagagagagagagagagagagagagagagagagagagagagagagagagagagagagagaga",
+                              "Lorem Ipsum Pulse Post Text Content",
                               style: TextStyle(
                                 fontSize: 17
                               ),
@@ -113,13 +116,11 @@ Widget pulseCard(BuildContext context, int index) {
               //LIKE
               IconButton(
                 icon: Icon(Icons.thumb_up, color: (_isLike) ? 
-                          Color(0xff007397) : Color(0xffffffff)),
+                          Colors.lightBlue : Colors.white,),
                 splashRadius: 20,
                 onPressed: () {
                   /*setState(() {
                   });*/
-                  print("KEEP ON KEEPING ON");
-                  
                   Post post = postModel.postFromSnapshot(index.toString());
                   if(_isLike = false) {
                     //adjust likes
@@ -157,14 +158,12 @@ Widget pulseCard(BuildContext context, int index) {
               //DISLIKE
               IconButton(
                 icon: Icon(Icons.thumb_down, color:(_isDislike) ?
-                          Color(0xff007397) : Color(0xffffffff)),
+                          Colors.pink : Colors.white),
                 splashRadius: 20,
                 splashColor: Colors.purple,
                 onPressed: () {
                   /*setState(() {
                   });*/
-                  print("MEH");
-
                   Post post = postModel.postFromSnapshot(index.toString());
                   if(_isDislike = false) {
                     //adjust likes

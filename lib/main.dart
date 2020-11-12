@@ -10,7 +10,8 @@ import 'views/main_feed.dart';
 import 'views/search_view.dart';
 import 'views/send_pulse.dart';
 import 'views/notification_view.dart';
-import 'views/messagePage.dart';
+import 'views/profilePage.dart';
+//import 'views/messagePage.dart';
 
 import 'widgets/drawer_menu.dart';
 import 'widgets/bottomNavigation.dart';
@@ -55,6 +56,8 @@ class MyApp extends StatelessWidget {
                     UpdateUserSettingsWidget(title: 'Update User Settings'),
                 '/mainFeed': (BuildContext context) =>
                     MainFeedWidget(title: 'Main Feed'),
+                '/profilePage': (BuildContext context) =>
+                    ProfilePage(title: 'Profile'),
               },
             );
           } else {

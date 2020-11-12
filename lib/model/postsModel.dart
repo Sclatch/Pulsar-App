@@ -49,23 +49,4 @@ class PostsModel {
         .where('title', isEqualTo: term)
         .get();
   }
-
-  Post postFromSnapshot(String id) {
-    Future<DocumentSnapshot> doc = getPost(id);
-    Post post = new Post();
-
-    doc.then((data) {
-      Post temp = Post(
-      user: data['user'],
-      title: data['title'],
-      content: data['content'],
-      image: data['image'],
-      comments: data['comments'],
-      date: data['date'],
-      location: data['location'],
-      likes: data['likes']);
-      post = temp;
-    });
-    return post;
-  }
 }

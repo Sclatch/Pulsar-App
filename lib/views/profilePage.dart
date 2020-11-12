@@ -1,5 +1,11 @@
 import 'package:Pulsar/widgets/pulse.dart';
 import 'package:flutter/material.dart';
+import 'package:Pulsar/model/postsModel.dart';
+import 'package:provider/provider.dart';
+import '../model/posts.dart';
+import '../model/postsModel.dart';
+import '../model/userSettingsModel.dart';
+import '../model/users.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key key, this.title}) : super(key: key);
@@ -11,9 +17,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  
+
   @override
   Widget build(BuildContext context) {
+
+    final UserSettingsModel userSettingsModel =
+        context.watch<UserSettingsModel>();
+    final PostsModel postsModel = PostsModel();
+
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton(
@@ -38,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           SizedBox(height: 10),
-          Text("Username",
+          Text(use,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 35
@@ -61,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: ListView.builder(
               itemCount: 4,
               itemBuilder: (BuildContext context, int index) {
-                return pulseCard(context, index);
+                return pulseCard(context, index, post);
               },
             )
           )

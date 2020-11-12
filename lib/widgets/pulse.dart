@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../model/postsModel.dart';
 import '../model/posts.dart';
+import '../model/postsModel.dart';
 
-Widget pulseCard(BuildContext context, int index) {
+Widget pulseCard(BuildContext context, int index, Post post) {
   bool _isDislike = false;
-  bool _isLike = false;
-  PostsModel postModel = new PostsModel();
+  bool _isLike = false;  
+  PostsModel model = new PostsModel();
   return Container(
     padding: const EdgeInsets.all(5),
     child: Column(
@@ -39,7 +39,7 @@ Widget pulseCard(BuildContext context, int index) {
                           SizedBox(height: 5),
                           //USERNAME
                           Text(
-                            "Username",
+                            post.user,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold
@@ -50,7 +50,7 @@ Widget pulseCard(BuildContext context, int index) {
                           Container(
                             width: MediaQuery.of(context).size.width * 0.60,
                             child: Text(
-                              "Lorem Ipsum Pulse Post Text Content",
+                              post.content,
                               style: TextStyle(
                                 fontSize: 17
                               ),
@@ -84,7 +84,7 @@ Widget pulseCard(BuildContext context, int index) {
                     ),
                     //NUMBER
                     child: Text(
-                      "237",
+                      post.likes.toString(),
                       style: TextStyle(
                         fontWeight: FontWeight.bold
                       ),
@@ -106,6 +106,7 @@ Widget pulseCard(BuildContext context, int index) {
               const Radius.circular(10)
             )
           ),
+          child: Image(image: AssetImage(post.image),),
         ),
         //THIS IS PULSE BOTTOM FEED (LIKE/COMMENT/DISLIKE)
         Container(
@@ -121,7 +122,6 @@ Widget pulseCard(BuildContext context, int index) {
                 onPressed: () {
                   /*setState(() {
                   });*/
-                  Post post = postModel.postFromSnapshot(index.toString());
                   if(_isLike = false) {
                     //adjust likes
                     if(_isDislike = true) {
@@ -139,7 +139,7 @@ Widget pulseCard(BuildContext context, int index) {
                     post.likes--;
                     _isLike = false;
                   }
-                  postModel.updatePost(post);
+                  model.updatePost(post);
                 }
               ),
               //COMMENT
@@ -164,7 +164,6 @@ Widget pulseCard(BuildContext context, int index) {
                 onPressed: () {
                   /*setState(() {
                   });*/
-                  Post post = postModel.postFromSnapshot(index.toString());
                   if(_isDislike = false) {
                     //adjust likes
                     if(_isLike = true) {
@@ -182,7 +181,7 @@ Widget pulseCard(BuildContext context, int index) {
                     post.likes++;
                     _isDislike = false;
                   }
-                  postModel.updatePost(post);
+                  model.updatePost(post);
                 },
               )
             ]

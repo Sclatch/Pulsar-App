@@ -56,7 +56,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
                 print(post);
 
-                return pulseCard(context, index);
+                return pulseCard(context, index, post);
 
                 return StreamBuilder(
                     stream: commentsModel.streamAllComments(),

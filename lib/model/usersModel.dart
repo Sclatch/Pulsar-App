@@ -42,4 +42,11 @@ class UserModel {
   Future<DocumentSnapshot> getUser(String id) async {
     return await FirebaseFirestore.instance.collection('users').doc(id).get();
   }
+
+  Future<QuerySnapshot> searchUser(String name) async {
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .where('username', isEqualTo: name)
+        .get();
+  }
 }

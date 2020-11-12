@@ -8,6 +8,8 @@ import '../model/userSettings.dart';
 import '../model/userSettingsModel.dart';
 import '../model/comments.dart';
 import '../model/commentsModel.dart';
+import '../model/users.dart';
+import '../model/usersModel.dart';
 
 import '../widgets/pulse.dart';
 
@@ -30,6 +32,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
     final CommentsModel commentsModel = CommentsModel();
     final PostsModel postsModel = PostsModel();
+    final UserModel usersModel = UserModel();
 
     //Users, Posts, and Comments all work in either of the following ways
     //This is how you access the posts and update as they update
@@ -56,7 +59,27 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
                 print(post);
 
-                return pulseCard(context, index, post);
+                return FutureBuilder(
+                    //This is how you search for a user
+                    future: usersModel.searchUser(post.user),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List users = snapshot.data.docs;
+
+                        DocumentSnapshot userDocument = users[0];
+
+                        final user = User.fromMap(userDocument.data(),
+                            reference: userDocument.reference);
+
+                        print(user);
+
+                        return pulseCard(context, index, post);
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    });
 
                 return StreamBuilder(
                     stream: commentsModel.streamAllComments(),

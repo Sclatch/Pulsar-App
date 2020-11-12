@@ -42,4 +42,11 @@ class PostsModel {
   Future<DocumentSnapshot> getPost(String id) async {
     return await FirebaseFirestore.instance.collection('posts').doc(id).get();
   }
+
+  Future<QuerySnapshot> searchPost(String term) async {
+    return await FirebaseFirestore.instance
+        .collection('posts')
+        .where('title', isEqualTo: term)
+        .get();
+  }
 }

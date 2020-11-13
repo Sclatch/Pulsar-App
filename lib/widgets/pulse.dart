@@ -6,7 +6,7 @@ import '../model/postsModel.dart';
 import '../model/users.dart';
 import '../views/profilePage.dart';
 
-Widget pulseCard(BuildContext context, int index, Post post, User user) {
+Widget pulseCard(BuildContext context, Post post, User user) {
   bool _isDislike = false;
   bool _isLike = false;
   PostsModel model = new PostsModel();
@@ -53,7 +53,16 @@ Widget pulseCard(BuildContext context, int index, Post post, User user) {
                                     fontSize: 20, fontWeight: FontWeight.bold)),
                             onTap: () {
                               print("GO TO THAT USER PROFILE");
-                              Navigator.pushNamed(context, '/profilePage');
+
+                            Navigator.push(context, PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (BuildContext context, _, __) {
+                                return Center(child: ProfilePage(title: 'Profile', user: user));
+                              },
+                              transitionsBuilder: (___, Animation<double> animation, ____, Widget child) {
+                                return child;
+                              }
+                            ));
                             },
                           ),
                             SizedBox(height: 7),

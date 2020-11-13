@@ -75,7 +75,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
                         print(user.timeToDate());
 
-                        return pulseCard(context, index, post, user);
+                        return pulseCard(context, post, user);
                       } else {
                         return Center(
                           child: CircularProgressIndicator(),

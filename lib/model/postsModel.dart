@@ -49,4 +49,11 @@ class PostsModel {
         .where('title', isEqualTo: term)
         .get();
   }
+
+  Future<QuerySnapshot> searchPostUser(String name) async {
+    return await FirebaseFirestore.instance
+        .collection('posts')
+        .where('user', isEqualTo: name)
+        .get();
+  }
 }

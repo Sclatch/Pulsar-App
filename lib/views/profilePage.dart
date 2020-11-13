@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import '../model/postsModel.dart';
 import '../model/posts.dart';
 import '../model/users.dart';
+import 'package:Pulsar/model/posts.dart';
+import 'package:Pulsar/model/postsModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key key, this.title, this.user}) : super(key: key);
@@ -23,8 +27,32 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     PostsModel postsModel;
-    //postsModel.getAllPosts();
-    
+    FutureBuilder(
+      //This is how you search for a user
+      future: postsModel.searchPost(user.username),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List posts = snapshot.data.docs;
+
+            return ListView.builder(
+                itemCount: posts.length,
+                itemBuilder: (BuildContext context, int index) {
+                  //This is just to show the indexed post
+                  DocumentSnapshot postDocument = posts[index];
+
+                  //This takes a post from the database and makes it an instance of post
+                  final post = Post.fromMap(postDocument.data(),
+                      reference: postDocument.reference);
+                  print(post);
+
+                  return pulseCard(context, post, user);
+                });
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+    });
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
@@ -73,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: ListView.builder(
               itemCount: 4,
               itemBuilder: (BuildContext context, int index) {
-                return pulseCard(context, index, Post(), user);
+                return pulseCard(context, Post(), user);
               },
             )
           )

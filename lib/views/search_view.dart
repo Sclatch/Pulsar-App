@@ -67,7 +67,7 @@ class _SearchViewState extends State<SearchView> {
 
                           print(post);
 
-                          return pulseCard(context, index, post, user);
+                          return pulseCard(context, post, user);
                         });
                   } else {
                     return Center(

@@ -20,13 +20,16 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final User user;
   String username;
+  String description;
 
   _ProfilePageState({this.user}) {
     if(user!=null) {
       username=user.username;
+      description=user.description;
     } 
     else {
       username="Anonymous";
+      description="Anonymous User";
     }
 
     print(username + "'s profile has been opened");
@@ -95,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             height: 100,
-            child: Text(user.description,
+            child: Text(description,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 17

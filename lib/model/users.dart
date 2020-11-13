@@ -48,6 +48,10 @@ class User {
     return date;
   }
 
+  Timestamp dateToTime(DateTime date) {
+    return Timestamp.fromDate(date);
+  }
+
   void setID(String id) {
     this.id = id;
   }

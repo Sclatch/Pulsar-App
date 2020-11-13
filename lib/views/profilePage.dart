@@ -75,11 +75,13 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             height: 25,
             child: RaisedButton(
-              child: Text("Edit Profile"),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => EditUserPage()));
-              }
-            ),
+                child: Text("Edit Profile"),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditUserPage(user: this.user)));
+                }),
           ),
           Container(
               padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -100,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             //This takes a post from the database and makes it an instance of post
                             final post = Post.fromMap(postDocument.data(),
                                 reference: postDocument.reference);
-                            print(post);
+                            //print(post);
 
                             return pulseCard(context, post, user);
                           });

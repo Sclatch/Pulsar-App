@@ -51,15 +51,18 @@ Widget drawerMenu(BuildContext context) {
       FlatButton(
         splashColor: Colors.lightBlue,
         onPressed: () {
-          Navigator.push(context, PageRouteBuilder(
-            opaque: false,
-            pageBuilder: (BuildContext context, _, __) {
-              return Center(child: ProfilePage(title: 'Profile', user: null));
-            },
-            transitionsBuilder: (___, Animation<double> animation, ____, Widget child) {
-              return child;
-            }
-          ));
+          Navigator.push(
+              context,
+              PageRouteBuilder(
+                  opaque: false,
+                  pageBuilder: (BuildContext context, _, __) {
+                    return Center(
+                        child: ProfilePage(title: 'Profile', user: null));
+                  },
+                  transitionsBuilder:
+                      (___, Animation<double> animation, ____, Widget child) {
+                    return child;
+                  }));
         },
         child: Container(
             height: 60,

@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     PostsModel postsModel;
-    postsModel.getAllPosts();
+    //postsModel.getAllPosts();
     
 
     return Scaffold(

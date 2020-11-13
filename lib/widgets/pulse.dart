@@ -10,6 +10,7 @@ Widget pulseCard(BuildContext context, Post post, User user) {
   bool _isDislike = false;
   bool _isLike = false;
   PostsModel model = new PostsModel();
+
   return Container(
       padding: const EdgeInsets.all(5),
       child: Column(children: <Widget>[

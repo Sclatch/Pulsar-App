@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../model/notifications.dart';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class SendPulse extends StatefulWidget {
   SendPulse({Key key, this.title}) : super(key: key);
@@ -10,11 +13,13 @@ class SendPulse extends StatefulWidget {
 }
 
 class _SendPulseState extends State<SendPulse> {
-
   String pulse = "";
+  
+  final _notifications = Notifications();
 
   @override
   Widget build(BuildContext context) {
+    _notifications.init();
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.all(15.0),
@@ -74,6 +79,7 @@ class _SendPulseState extends State<SendPulse> {
               ),
               onPressed: () {
                 print("Send something");
+                _notifications.sendNotificationNow("Post Sent", "", "");
                 final snackBar = SnackBar(
                   content: Text("Pulse Sent!",
                     style: TextStyle(

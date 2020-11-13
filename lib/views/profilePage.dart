@@ -1,6 +1,6 @@
 import 'package:Pulsar/widgets/pulse.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import '../model/postsModel.dart';
 import '../model/posts.dart';
 import '../model/users.dart';
 
@@ -14,14 +14,17 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-    final User user;
+  final User user;
+
   _ProfilePageState({this.user}) {
     print(user.username + "'s profile has been opened");
   }
 
   @override
   Widget build(BuildContext context) {
-    //final PostsModel postsModel = PostsModel();
+    PostsModel postsModel;
+    postsModel.getAllPosts();
+    
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,

@@ -33,12 +33,18 @@ Widget pulseCard(BuildContext context, int index, Post post, User user) {
                         return Center(child: ProfilePage(title: 'Profile', user: user));
                       },
                       transitionsBuilder: (___, Animation<double> animation, ____, Widget child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: RotationTransition(
-                            turns: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
-                            child: child,
-                          ),
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: Offset.zero,
+                            end: const Offset(1.5, 0.0),
+                          ).animate(CurvedAnimation(
+                            parent: AnimationController(
+                              duration: const Duration(seconds: 2),
+                              vsync: this,
+                            )..repeat(reverse: true);,
+                            curve: Curves.elasticIn,
+                          );,
+                          child: child
                         );
                       }
                     ));

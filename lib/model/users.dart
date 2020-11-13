@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class User {
   String id;
@@ -37,6 +38,14 @@ class User {
 
   String toString() {
     return '$username $password $description $image $birthday';
+  }
+
+  String timeToDate() {
+    var fullDate =
+        DateTime.fromMillisecondsSinceEpoch(this.birthday.seconds * 1000);
+
+    var date = DateFormat.yMMMd().format(fullDate);
+    return date;
   }
 
   void setID(String id) {

@@ -73,6 +73,8 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
                         print(user);
 
+                        print(user.timeToDate());
+
                         return pulseCard(context, index, post, user);
                       } else {
                         return Center(

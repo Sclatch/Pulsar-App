@@ -43,10 +43,27 @@ class _SendPulseState extends State<SendPulse> {
               hintText: "What's on your mind?",
               isDense: true,
             ),
-            maxLines: 6,
+            maxLines: 4,
             //PLEASE WRITE THE FUNCTION HERE TO RETURN THE VALUE
             onChanged: (value) {},
           ),
+          TextField(
+            style: TextStyle(
+              fontSize: 18.0,
+            ),
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: BorderSide(width: 0.75),
+              ),
+              hintText: "Link to your Image",
+              isDense: true,
+            ),
+            maxLines: 1,
+            //PLEASE WRITE THE FUNCTION HERE FOR IMAGE
+            onChanged: (value) {},
+          ),
+
+          //SEND BUTTON
           Container(
             padding: const EdgeInsets.only(top: 10),
             width: 325,
@@ -57,6 +74,17 @@ class _SendPulseState extends State<SendPulse> {
               ),
               onPressed: () {
                 print("Send something");
+                final snackBar = SnackBar(
+                  content: Text("Pulse Sent!",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17
+                    ),
+                  ),
+                  backgroundColor: Colors.grey[900],
+                );
+
+                Scaffold.of(context).showSnackBar(snackBar);
               },
             )
           ),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../model/posts.dart';
 import '../model/postsModel.dart';
@@ -53,13 +55,33 @@ Widget pulseCard(BuildContext context, int index, Post post, User user) {
               Column(
                 children: [
                   //DROPDOWN
-                  IconButton(
-                      icon: Icon(Icons.expand_more),
-                      splashRadius: 1,
-                      onPressed: () {
-                        //DROPDOWN FUNCTION
-                        print("idk dropdown or something lol");
-                      }),
+                  PopupMenuButton(
+                    icon: Icon(Icons.expand_more),
+                    itemBuilder: (context) => [
+                      //DELETE BUTTON
+                      PopupMenuItem(
+                        value: "delete",
+                        child: Container(
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.delete),
+                              SizedBox(width: 5),
+                              Text("Delete")
+                            ],
+                          ),
+                        )
+                      ),
+                      //JUST INCASE WE NEED SOMETHING MORE
+                    ],
+                    onCanceled: () {
+                      //YOU CAN IGNORE THIS
+                      print("You decided it's not worth your time");
+                    },
+                    onSelected: (value) {
+                      //THIS IS FOR DELETE POST FUNCTION
+                      print("DELETE $value");
+                    },
+                  ),
                   //NUMBER OF LIKES/DISLIKES
                   Container(
                       padding: const EdgeInsets.all(5),
@@ -85,7 +107,10 @@ Widget pulseCard(BuildContext context, int index, Post post, User user) {
           decoration: BoxDecoration(
               color: Colors.lightBlue[50],
               borderRadius: BorderRadius.all(const Radius.circular(10))),
-          child: Image(image: NetworkImage(post.image)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image(image: NetworkImage(post.image), fit: BoxFit.fitWidth,),
+          )
           //Image(image: AssetImage(post.image),),
         ),
         //THIS IS PULSE BOTTOM FEED (LIKE/COMMENT/DISLIKE)

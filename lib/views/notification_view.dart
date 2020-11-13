@@ -32,7 +32,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   color: Colors.transparent, //DO NOT REMOVE THIS. OTHERWISE THE SPLASH WONT SHOW
                     child: IconButton(
                     icon: Icon(
-                      Icons.more_vert,
+                      Icons.visibility_off,
                       size: 20,
                     ),
                     splashRadius: 15,

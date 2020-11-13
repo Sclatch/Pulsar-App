@@ -19,9 +19,17 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final User user;
+  String username;
 
   _ProfilePageState({this.user}) {
-    print(user.username + "'s profile has been opened");
+    if(user!=null) {
+      username=user.username;
+    } 
+    else {
+      username="Anonymous";
+    }
+
+    print(username + "'s profile has been opened");
   }
 
   @override
@@ -29,12 +37,12 @@ class _ProfilePageState extends State<ProfilePage> {
     PostsModel postsModel;
     FutureBuilder(
       //This is how you search for a user
-      future: postsModel.searchPost(user.username),
+      future: postsModel.searchPost(username),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List posts = snapshot.data.docs;
-
-            return ListView.builder(
+            if(user!=null) {
+              return ListView.builder(
                 itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
                   //This is just to show the indexed post
@@ -47,6 +55,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   return pulseCard(context, post, user);
                 });
+            }
+            else {
+              return ListView();
+            }
           } else {
             return Center(
               child: CircularProgressIndicator(),
@@ -78,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           SizedBox(height: 10),
-          Text(user.username,
+          Text(username,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 35

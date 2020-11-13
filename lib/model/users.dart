@@ -5,14 +5,16 @@ class User {
   String username;
   String password;
   String description;
+  String image;
   DocumentReference reference;
 
-  User({this.username, this.password, this.description});
+  User({this.username, this.password, this.description, this.image});
 
   User.fromMap(Map<String, dynamic> map, {this.reference}) {
     this.id = this.reference.id;
     this.username = map['username'];
     this.password = map['password'];
+    this.image = map['image'];
     this.description = map['description'];
   }
 
@@ -21,11 +23,12 @@ class User {
       'username': this.username,
       'password': this.password,
       'description': this.description,
+      'image': this.image,
     };
   }
 
   String toString() {
-    return '$username $password $description';
+    return '$username $password $description $image';
   }
 
   void setID(String id) {

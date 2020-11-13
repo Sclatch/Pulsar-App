@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 
 import '../model/userSettings.dart';
 import '../model/userSettingsModel.dart';
@@ -43,8 +43,8 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final UserSettingsModel userSettingsModel =
-        Provider.of<UserSettingsModel>(context);
+    //final UserSettingsModel userSettingsModel =
+    //    Provider.of<UserSettingsModel>(context);
 
     return Scaffold(
       appBar: AppBar(

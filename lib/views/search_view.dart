@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/pulse.dart';
 import '../model/postsModel.dart';
 import '../model/posts.dart';
-import '../model/commentsModel.dart';
+//import '../model/commentsModel.dart';
 import '../model/users.dart';
 
 class SearchView extends StatefulWidget {

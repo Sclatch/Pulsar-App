@@ -9,7 +9,7 @@ import 'views/main_feed.dart';
 import 'views/search_view.dart';
 import 'views/send_pulse.dart';
 import 'views/notification_view.dart';
-import 'views/profilePage.dart';
+//import 'views/profilePage.dart';
 //import 'views/messagePage.dart';
 
 import 'widgets/drawer_menu.dart';

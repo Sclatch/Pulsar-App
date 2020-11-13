@@ -35,13 +35,13 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     PostsModel postsModel;
-    FutureBuilder(
-      //This is how you search for a user
-      future: postsModel.searchPost(username),
+    if(user!=null) {
+      FutureBuilder(
+        //This is how you search for a user
+        future: postsModel.searchPost(username),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List posts = snapshot.data.docs;
-            if(user!=null) {
               return ListView.builder(
                 itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -55,16 +55,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   return pulseCard(context, post, user);
                 });
-            }
-            else {
-              return ListView();
-            }
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
           }
-    });
+          else {
+            return Center( child: CircularProgressIndicator(),);
+        }
+      });
+    }
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,

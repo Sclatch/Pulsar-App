@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'model/userSettings.dart';
 import 'model/userSettingsModel.dart';
 
 import 'views/updateSettings.dart';
@@ -95,12 +94,6 @@ class _MainPageState extends State<MainPage> {
           child: Image.asset('lib/assets/scaffoldText.png',
               width: 150, height: 150),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: _updateUserSettings,
-          ),
-        ],
       ),
       drawer: drawerMenu(context),
       body: options[_selectedIndex],
@@ -118,22 +111,5 @@ class _MainPageState extends State<MainPage> {
         },
       ),
     );
-  }
-
-  Future<void> _updateUserSettings() async {
-    var userSettings =
-        await Navigator.pushNamed(context, '/updateUserSettings');
-
-    UserSettings newUserSettings = userSettings;
-
-    newUserSettings.setID(1);
-
-    final _model = UserSettingsModel();
-
-    _model.updateUserSettings(newUserSettings);
-
-    setState(() {});
-
-    print("Update called: $newUserSettings");
   }
 }

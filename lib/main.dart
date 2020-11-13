@@ -91,6 +91,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         title: Center(
+          widthFactor: 2,
           child: Image.asset('lib/assets/scaffoldText.png',
               width: 150, height: 150),
         ),

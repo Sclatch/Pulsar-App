@@ -17,8 +17,29 @@ class UpdateUserSettingsWidget extends StatefulWidget {
 class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
   final _formKey = GlobalKey<FormState>();
 
-  double _fontSize = 14;
-  bool _showImages = true;
+  final model = UserSettingsModel();
+  UserSettings userSettings;
+
+  @override
+  void initState() {
+    super.initState();
+    //LOADING THE USER's SETTINGS
+    loadSettings();
+  }
+
+  Future<void> loadSettings() async {
+    var _temp = await model.getAllUserSettings();
+
+    setState(() {
+      userSettings = _temp[0];
+      if (userSettings.fontSize == null) {
+        userSettings.fontSize = 14;
+      }
+      if (userSettings.showImages == null) {
+        userSettings.showImages = true;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +55,10 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.18,
                   alignment: Alignment.topLeft,
                   child: Padding(
                     padding: EdgeInsets.only(left: 15),
@@ -51,14 +72,14 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
                   width: MediaQuery.of(context).size.width * 0.78,
                   alignment: Alignment.center,
                   child: Slider(
-                    value: _fontSize,
+                    value: userSettings.fontSize.toDouble(),
                     min: 10,
                     max: 20,
                     divisions: 5,
-                    label: _fontSize.round().toString(),
+                    label: userSettings.fontSize.round().toString(),
                     onChanged: (double value) {
                       setState(() {
-                        _fontSize = value;
+                        userSettings.fontSize = value.toInt();
                       });
                     },
                   ),
@@ -66,10 +87,10 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.18,
                   alignment: Alignment.topLeft,
                   child: Padding(
                     padding: EdgeInsets.only(left: 15),
@@ -80,12 +101,11 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.78,
-                  alignment: Alignment.center,
+                  alignment: Alignment.centerRight,
                   child: Checkbox(
-                    value: _showImages,
+                    value: userSettings.showImages,
                     onChanged: (bool value) => setState(() {
-                      _showImages = value;
+                      userSettings.showImages = value;
                     }),
                   ),
                 ),
@@ -97,8 +117,8 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           UserSettings updatedUserSettings = UserSettings(
-            fontSize: _fontSize.round(),
-            showImages: _showImages,
+            fontSize: userSettings.fontSize.round(),
+            showImages: userSettings.showImages,
           );
           Navigator.of(context).pop(updatedUserSettings);
         },

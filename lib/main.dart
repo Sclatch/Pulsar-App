@@ -56,8 +56,8 @@ class MyApp extends StatelessWidget {
                     UpdateUserSettingsWidget(title: 'Update User Settings'),
                 '/mainFeed': (BuildContext context) =>
                     MainFeedWidget(title: 'Main Feed'),
-                '/profilePage': (BuildContext context) =>
-                    ProfilePage(title: 'Profile'),
+                //'/profilePage': (BuildContext context) =>
+                //    ProfilePage(title: 'Profile'),
               },
             );
           } else {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../model/posts.dart';
 import '../model/postsModel.dart';
 import '../model/users.dart';
+import '../views/profilePage.dart';
 
 Widget pulseCard(BuildContext context, int index, Post post, User user) {
   bool _isDislike = false;
@@ -25,7 +26,22 @@ Widget pulseCard(BuildContext context, int index, Post post, User user) {
                     //ADD NAVIGATE HERE
                     onTap: () {
                       print("GO TO THAT USER PROFILE");
-                      Navigator.pushNamed(context, '/userProfile');
+
+                    Navigator.push(context, PageRouteBuilder(
+                      opaque: false,
+                      pageBuilder: (BuildContext context, _, __) {
+                        return Center(child: ProfilePage(title: 'Profile', user: user));
+                      },
+                      transitionsBuilder: (___, Animation<double> animation, ____, Widget child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: RotationTransition(
+                            turns: Tween<double>(begin: 0.5, end: 1.0).animate(animation),
+                            child: child,
+                          ),
+                        );
+                      }
+                    ));
                     },
                   ),
                   SizedBox(width: 10),
@@ -37,18 +53,24 @@ Widget pulseCard(BuildContext context, int index, Post post, User user) {
                         children: <Widget>[
                           SizedBox(height: 5),
                           //USERNAME
-                          Text(post.user,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
-                          SizedBox(height: 7),
-                          //CONTENT OF PULSE
-                          Container(
-                              width: MediaQuery.of(context).size.width * 0.60,
-                              child: Text(
-                                post.content,
-                                style: TextStyle(fontSize: 17),
-                              ))
-                        ]),
+                          InkWell(child:
+                            Text(post.user,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
+                            onTap: () {
+                              print("GO TO THAT USER PROFILE");
+                              Navigator.pushNamed(context, '/profilePage');
+                            },
+                          ),
+                            SizedBox(height: 7),
+                            //CONTENT OF PULSE
+                            Container(
+                                width: MediaQuery.of(context).size.width * 0.60,
+                                child: Text(
+                                  post.content,
+                                  style: TextStyle(fontSize: 17),
+                                )),
+                                                  ]),
                   )
                 ]),
               ),

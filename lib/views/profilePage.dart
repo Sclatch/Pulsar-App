@@ -5,20 +5,22 @@ import '../model/posts.dart';
 import '../model/users.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key key, this.title}) : super(key: key);
-
+  ProfilePage({Key key, this.title, this.user}) : super(key: key);
+  final User user;
   final String title;
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageState createState() => _ProfilePageState(user: user);
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+    final User user;
+  _ProfilePageState({this.user}) {
+    print(user.username + "'s profile has been opened");
+  }
 
   @override
   Widget build(BuildContext context) {
-    final User user =
-        context.watch<User>();
     //final PostsModel postsModel = PostsModel();
 
     return Scaffold(
@@ -54,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             height: 100,
-            child: Text(user.username + user.description,
+            child: Text(user.description,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 17

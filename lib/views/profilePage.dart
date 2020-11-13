@@ -1,3 +1,4 @@
+import 'package:Pulsar/views/editUser_page.dart';
 import 'package:Pulsar/widgets/pulse.dart';
 import 'package:flutter/material.dart';
 import '../model/postsModel.dart';
@@ -54,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            height: 175,
+            height: 150,
             color: Colors.lightBlue,
             child: Center(
                 child:
@@ -72,12 +73,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(fontSize: 17),
               )),
           Container(
+            height: 25,
+            child: RaisedButton(
+              child: Text("Edit Profile"),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => EditUserPage()));
+              }
+            ),
+          ),
+          Container(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.60,
               child: FutureBuilder(
                   //This is how you search for a user
-                  future: postsModel.searchPostUser(user.username),
+                  future: postsModel.searchPostUser(username),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List posts = snapshot.data.docs;

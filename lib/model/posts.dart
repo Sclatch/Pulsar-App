@@ -10,6 +10,7 @@ class Post {
   Timestamp date;
   GeoPoint location;
   int likes;
+  int dislikes;
 
   DocumentReference reference;
 
@@ -21,7 +22,8 @@ class Post {
       this.comments,
       this.date,
       this.location,
-      this.likes});
+      this.likes,
+      this.dislikes});
 
   Post.fromMap(Map<String, dynamic> map, {this.reference}) {
     this.id = this.reference.id;
@@ -33,6 +35,7 @@ class Post {
     this.date = map['date'];
     this.location = map['location'];
     this.likes = map['likes'];
+    this.dislikes = map['dislikes'];
   }
 
   Map<String, dynamic> toMap() {
@@ -45,11 +48,16 @@ class Post {
       'date': this.date,
       'location': this.location,
       'likes': this.likes,
+      'dislikes': this.dislikes,
     };
   }
 
   String toString() {
-    return '$user $title $content $image $comments $date $location $likes';
+    return '$user $title $content $image $comments $date $location $likes $dislikes';
+  }
+
+  int totalLikes() {
+    return this.likes - this.dislikes;
   }
 
   void setID(String id) {

@@ -2,6 +2,7 @@ import 'package:Pulsar/views/aboutPage.dart';
 import 'package:flutter/material.dart';
 
 import '../views/profilePage.dart';
+import '../views/loginPage.dart';
 import '../model/userSettings.dart';
 import '../model/userSettingsModel.dart';
 
@@ -71,6 +72,24 @@ Widget drawerMenu(BuildContext context) {
               SizedBox(width: 15.0),
               Text(
                 "Profile",
+                textScaleFactor: 1.30,
+              )
+            ])),
+      ),
+      //LOG IN BUTTON
+      FlatButton(
+        splashColor: Colors.lightBlue,
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginPage()));
+        },
+        child: Container(
+            height: 60,
+            child: Row(children: <Widget>[
+              Icon(Icons.input, size: 30.0),
+              SizedBox(width: 15.0),
+              Text(
+                "Login",
                 textScaleFactor: 1.30,
               )
             ])),

@@ -97,6 +97,18 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                           ),
                         )
                       ),
+                      PopupMenuItem(
+                        value: "stats",
+                        child: Container(
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.insert_chart),
+                              SizedBox(width: 5),
+                              Text("Statistic")
+                            ],
+                          ),
+                        )
+                      ),
                       //JUST INCASE WE NEED SOMETHING MORE
                     ],
                     onCanceled: () {
@@ -105,7 +117,7 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                     },
                     onSelected: (value) {
                       //THIS IS FOR DELETE POST FUNCTION
-                      print("DELETE $value");
+                      print("$value");
                     },
                   ),
                   //NUMBER OF LIKES/DISLIKES
@@ -125,16 +137,32 @@ Widget pulseCard(BuildContext context, Post post, User user) {
             ],
           ),
         ),
-        SizedBox(height: 15),
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                child: Row(
+                  children: [
+                    Icon(Icons.place),
+                    Text(" Location here")
+                  ],
+                ),
+              ),
+              Text("Time here")
+            ],
+          )
+        ),
         //SHOWS PICTURE OR MEDIA
         Container(
-          width: MediaQuery.of(context).size.width - 50,
-          height: 200,
+          width: MediaQuery.of(context).size.width * 0.97,
+          height: 225,
           decoration: BoxDecoration(
               color: Colors.lightBlue[50],
-              borderRadius: BorderRadius.all(const Radius.circular(10))),
+              borderRadius: BorderRadius.all(const Radius.circular(15))),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(15),
             child: Image(image: NetworkImage(post.image), fit: BoxFit.fitWidth,),
           )
           //Image(image: AssetImage(post.image),),

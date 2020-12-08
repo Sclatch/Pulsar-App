@@ -36,7 +36,7 @@ class _SendPulseState extends State<SendPulse> {
             "Send a Pulse",
             textScaleFactor: 1.5
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 15),
           TextField(
             style: TextStyle(
               fontSize: 25.0,
@@ -52,13 +52,14 @@ class _SendPulseState extends State<SendPulse> {
             //PLEASE WRITE THE FUNCTION HERE TO RETURN THE VALUE
             onChanged: (value) {},
           ),
+          SizedBox(height: 0.5),
           TextField(
             style: TextStyle(
               fontSize: 18.0,
             ),
             decoration: const InputDecoration(
               border: OutlineInputBorder(
-                borderSide: BorderSide(width: 0.75),
+                borderSide: BorderSide(width: 0.10),
               ),
               hintText: "Link to your Image",
               isDense: true,
@@ -67,10 +68,25 @@ class _SendPulseState extends State<SendPulse> {
             //PLEASE WRITE THE FUNCTION HERE FOR IMAGE
             onChanged: (value) {},
           ),
-
-          //SEND BUTTON
+          //GPS Location
           Container(
             padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(Icons.place),
+                SizedBox(width: 5),
+                Text(
+                  "Your current location",
+                  textScaleFactor: 1.25,
+                )
+              ]
+            ),
+          ),
+          //SEND BUTTON
+          Container(
+            padding: const EdgeInsets.only(top: 5),
             width: 325,
             child: RaisedButton(
               child: Text(

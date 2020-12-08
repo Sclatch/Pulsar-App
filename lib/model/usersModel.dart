@@ -49,4 +49,31 @@ class UserModel {
         .where('username', isEqualTo: name)
         .get();
   }
+
+  Future<User> checkLogin(String name, String pass) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('username', isEqualTo: name)
+        .get();
+
+    List users = snapshot.docs;
+
+    if (users.isEmpty) {
+      print("USER NOT FOUND");
+      return null;
+    } else {
+      DocumentSnapshot userDocument = users[0];
+
+      User user =
+          User.fromMap(userDocument.data(), reference: userDocument.reference);
+
+      if (user.password != pass) {
+        print("INCORRECT PASSWORD");
+        return null;
+      } else {
+        print("LOGGED IN");
+        return user;
+      }
+    }
+  }
 }

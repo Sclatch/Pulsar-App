@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:latlong/latlong.dart';
 
 class Post {
   String id;
@@ -58,6 +59,10 @@ class Post {
 
   int totalLikes() {
     return this.likes - this.dislikes;
+  }
+
+  LatLng getLatLng() {
+    return LatLng(this.location.latitude, this.location.longitude);
   }
 
   void setID(String id) {

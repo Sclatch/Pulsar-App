@@ -36,6 +36,7 @@ dependencies:
   sqflite:
   firebase_core:
   cloud_firestore:
+  latlong: 
 
 dev_dependencies:
   flutter_test:

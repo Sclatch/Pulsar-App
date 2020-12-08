@@ -5,6 +5,7 @@ import '../model/posts.dart';
 import '../model/postsModel.dart';
 import '../model/users.dart';
 import '../views/profilePage.dart';
+import '../views/statsPost.dart';
 
 Widget pulseCard(BuildContext context, Post post, User user) {
   bool _isDislike = false;
@@ -118,6 +119,11 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                     onSelected: (value) {
                       //THIS IS FOR DELETE POST FUNCTION
                       print("$value");
+                      if (value == 'stats') {
+                        Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => PostStatPage(post: post))
+                        );
+                      }
                     },
                   ),
                   //NUMBER OF LIKES/DISLIKES

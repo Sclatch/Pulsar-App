@@ -39,6 +39,7 @@ dependencies:
   latlong: 
   charts_flutter:
   flutter_map:
+  geolocator: 5.1.1
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import '../model/notifications.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong/latlong.dart';
 
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import '../model/notifications.dart';
 
 class SendPulse extends StatefulWidget {
   SendPulse({Key key, this.title}) : super(key: key);
@@ -14,12 +16,42 @@ class SendPulse extends StatefulWidget {
 
 class _SendPulseState extends State<SendPulse> {
   String pulse = "";
+  var _geolocator = Geolocator();
+  LatLng centre;
+  String address = "Loading...";
   
   final _notifications = Notifications();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     _notifications.init();
+
+    _geolocator.checkGeolocationPermissionStatus().then(
+      (GeolocationStatus status) {
+        print('Geolocation Status: $status');
+      }
+    );
+
+    _geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+    ). then((Position userLocation) {
+ 
+      centre = LatLng(userLocation.latitude, userLocation.longitude);
+
+      _geolocator.placemarkFromCoordinates(userLocation.latitude, userLocation.longitude).then(
+        (List<Placemark> place) {
+          setState(() {
+            address = place[0].subThoroughfare + " " + place[0].thoroughfare;
+          });
+        }
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.all(15.0),
@@ -78,7 +110,7 @@ class _SendPulseState extends State<SendPulse> {
                 Icon(Icons.place),
                 SizedBox(width: 5),
                 Text(
-                  "Your current location",
+                  "$address",
                   textScaleFactor: 1.25,
                 )
               ]

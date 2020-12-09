@@ -69,6 +69,10 @@ class Post {
     return LatLng(this.location.latitude, this.location.longitude);
   }
 
+  DateTime toDate() {
+    return date.toDate();
+  }
+
   void setID(String id) {
     this.id = id;
   }

@@ -21,14 +21,17 @@ class _ProfilePageState extends State<ProfilePage> {
   final User user;
   String username;
   String description;
+  NetworkImage pfp;
 
   _ProfilePageState({this.user}) {
     if (user != null) {
       username = user.username;
       description = user.description;
+      pfp = NetworkImage(user.image);
     } else {
       username = "Anonymous";
       description = "Anonymous User";
+      pfp = null;
     }
 
     print(username + "'s profile has been opened");
@@ -58,8 +61,12 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 150,
             color: Colors.lightBlue,
             child: Center(
-                child:
-                    CircleAvatar(radius: 50, backgroundColor: Colors.blueGrey)),
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.blueGrey,
+                backgroundImage: pfp
+              )
+            ),
           ),
           SizedBox(height: 10),
           Text(username,

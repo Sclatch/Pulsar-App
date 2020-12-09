@@ -13,6 +13,8 @@ Widget pulseCard(BuildContext context, Post post, User user) {
   bool _isLike = false;
   PostsModel model = new PostsModel();
 
+  final DateTime time = post.toDate();
+
   return Container(
       padding: const EdgeInsets.all(5),
       child: Column(children: <Widget>[
@@ -25,7 +27,10 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                 child: Row(children: <Widget>[
                   GestureDetector(
                     child: CircleAvatar(
-                        radius: 35, backgroundColor: Colors.blueGrey),
+                      radius: 35,
+                      backgroundColor: Colors.blueGrey,
+                      backgroundImage: NetworkImage(user.image),
+                    ),
                     //CLICK PFP TO GO TO THE USER PROFILE
                     onTap: () {
                     Navigator.push(context, PageRouteBuilder(
@@ -165,7 +170,7 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                             BorderRadius.all(const Radius.circular(15))),
                     //NUMBER
                     child: Text(
-                      post.likes.toString(),
+                      "${post.likes - post.dislikes}",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   )
@@ -175,7 +180,7 @@ Widget pulseCard(BuildContext context, Post post, User user) {
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.only(top: 20, bottom: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -195,7 +200,7 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                     children: [
                       Icon(Icons.place),
                       Text(
-                        " Really long location name",
+                        " ${post.address}",
                         style: TextStyle(
                           fontSize: 16
                         ),
@@ -213,7 +218,7 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                 },
               ),
               Text(
-                "Time here",
+                "${time.year} / ${time.month} / ${time.day}",
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey

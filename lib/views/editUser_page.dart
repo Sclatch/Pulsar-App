@@ -18,7 +18,9 @@ class _EditUserPageState extends State<EditUserPage> {
   final UserModel usersModel = UserModel();
   DateTime birthday;
   NetworkImage pfp;
+  NetworkImage background;
   String pfpLink;
+  String backgroundLink;
   String description;
 
   _EditUserPageState({this.user});
@@ -30,13 +32,21 @@ class _EditUserPageState extends State<EditUserPage> {
     print('\n\n\n\n\n\n$user');
     if(user != null) {
       birthday = user.birthday.toDate();
-      pfp = NetworkImage(user.image);
       description = user.description;
+      if(user.background != null) {
+        background = NetworkImage(user.background);
+        backgroundLink = user.background;
+      }
+      if (user.image != null) {
+        pfp = NetworkImage(user.image);
+        pfpLink = user.image;
+      }
     }
     else {
       birthday = DateTime.now();
       pfp = null;
       description = null;
+      background = null;
     }
   }
 
@@ -63,10 +73,11 @@ class _EditUserPageState extends State<EditUserPage> {
                     ),
                     Container(
                       width:  MediaQuery.of(context).size.width * 0.65,
-                      child: TextField(
+                      child: TextFormField(
                         style: TextStyle(
                           fontSize: 18.0,
                         ),
+                        initialValue: pfpLink,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
                             borderSide: BorderSide(width: 0.10),
@@ -99,7 +110,6 @@ class _EditUserPageState extends State<EditUserPage> {
                   isDense: true,
                 ),
                 maxLines: 4,
-                //PLEASE WRITE THE FUNCTION HERE TO RETURN THE VALUE
                 onChanged: (value) {
                   description = value;
                 },
@@ -134,17 +144,24 @@ class _EditUserPageState extends State<EditUserPage> {
               ),
               SizedBox(height: 15),
               Container(
-                color: Colors.lightBlue,
                 width: MediaQuery.of(context).size.width * 0.90,
                 height: 175,
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue,
+                  image: DecorationImage(
+                    image: background,
+                    fit: BoxFit.cover
+                  )
+                )
               ),
               Container(
                 padding: const EdgeInsets.only(top: 10),
                 width:  MediaQuery.of(context).size.width * 0.90,
-                child: TextField(
+                child: TextFormField(
                   style: TextStyle(
                     fontSize: 18.0,
                   ),
+                  initialValue: backgroundLink,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(width: 0.10),
@@ -154,7 +171,9 @@ class _EditUserPageState extends State<EditUserPage> {
                   ),
                   maxLines: 1,
                   //PLEASE WRITE THE FUNCTION HERE FOR IMAGE
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    backgroundLink = value;
+                  },
                 ),
               ),
 
@@ -176,6 +195,7 @@ class _EditUserPageState extends State<EditUserPage> {
                         user.birthday = time;
                         user.description = description;
                         user.image = pfpLink;
+                        user.background = backgroundLink;
                         usersModel.updateUser(user);
 
                         Navigator.pop(context);

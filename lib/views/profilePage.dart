@@ -22,19 +22,23 @@ class _ProfilePageState extends State<ProfilePage> {
   String username;
   String description;
   NetworkImage pfp;
+  NetworkImage background;
 
   _ProfilePageState({this.user}) {
     if (user != null) {
       username = user.username;
       description = user.description;
-      pfp = NetworkImage(user.image);
+      if(user.image != null){
+        pfp = NetworkImage(user.image);
+      }
+      if(user.background != null){
+        background = NetworkImage(user.background);
+      }
+      
     } else {
       username = "Anonymous";
       description = "Anonymous User";
-      pfp = null;
     }
-
-    print(username + "'s profile has been opened");
   }
 
   @override
@@ -59,7 +63,13 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             width: MediaQuery.of(context).size.width,
             height: 150,
-            color: Colors.lightBlue,
+            decoration: BoxDecoration(
+              color: Colors.lightBlue,
+              image: DecorationImage(
+                image: background,
+                fit: BoxFit.cover
+              )
+            ),
             child: Center(
               child: CircleAvatar(
                 radius: 50,

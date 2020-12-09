@@ -11,6 +11,8 @@ import '../model/users.dart';
 
 Widget drawerMenu(BuildContext context) {
   final UserModel usersModel = UserModel();
+  NetworkImage pfp;
+  NetworkImage background;
 
   return FutureBuilder(
       future: checkUserSettings(context),
@@ -27,14 +29,21 @@ Widget drawerMenu(BuildContext context) {
                   if (snapshot.data.docs.isEmpty) {
                     user = User(
                       username: "Anonymous",
-                      image: "https://i.imgur.com/dnQFN6c.png",
-                      background: "https://i.imgur.com/dnQFN6c.png",
+                      image: "https://i.imgur.com/wvLOZSn.png",
+                      background: "https://i.imgur.com/t0ZHBWX.jpg",
                     );
                   } else {
                     DocumentSnapshot userDocument = snapshot.data.docs[0];
 
                     user = User.fromMap(userDocument.data(),
                         reference: userDocument.reference);
+                  }
+
+                  if(user.background != null){
+                    background = NetworkImage(user.background);
+                  }
+                  if(user.image != null) {
+                    pfp = NetworkImage(user.image);
                   }
 
                   return Drawer(
@@ -48,7 +57,13 @@ Widget drawerMenu(BuildContext context) {
                         padding: EdgeInsets.only(left: 15, bottom: 15),
                         height: 175,
                         width: 500,
-                        color: Colors.lightBlue,
+                        decoration: BoxDecoration(
+                          color: Colors.lightBlue,
+                          image: DecorationImage(
+                            image: background,
+                            fit: BoxFit.cover
+                          )
+                        ),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -56,7 +71,7 @@ Widget drawerMenu(BuildContext context) {
                               CircleAvatar(
                                 radius: 35.0,
                                 backgroundColor: Colors.blueGrey[700],
-                                backgroundImage: NetworkImage(user.image),
+                                backgroundImage: pfp,
                               ),
                               SizedBox(width: 12),
                               Text(
@@ -72,20 +87,9 @@ Widget drawerMenu(BuildContext context) {
                         splashColor: Colors.lightBlue,
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                  opaque: false,
-                                  pageBuilder: (BuildContext context, _, __) {
-                                    return Center(
-                                        child: ProfilePage(
-                                            title: 'Profile', user: null));
-                                  },
-                                  transitionsBuilder: (___,
-                                      Animation<double> animation,
-                                      ____,
-                                      Widget child) {
-                                    return child;
-                                  }));
+                            context,
+                            MaterialPageRoute(builder: (context) => ProfilePage(user: user))
+                          );
                         },
                         child: Container(
                             height: 60,
@@ -201,4 +205,8 @@ Future<UserSettings> checkUserSettings(BuildContext context) async {
   userSettingsModel.updateUserSettings(userSettings);
 
   return userSettings;
+}
+
+Widget _loginButton(BuildContext context) {
+
 }

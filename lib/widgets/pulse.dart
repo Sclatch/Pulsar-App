@@ -12,8 +12,13 @@ Widget pulseCard(BuildContext context, Post post, User user) {
   bool _isDislike = false;
   bool _isLike = false;
   PostsModel model = new PostsModel();
+  NetworkImage pfp;
 
   final DateTime time = post.toDate();
+
+  if(user.image != null) {
+    pfp = NetworkImage(user.image);
+  } 
 
   return Container(
       padding: const EdgeInsets.all(5),
@@ -29,7 +34,7 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                     child: CircleAvatar(
                       radius: 35,
                       backgroundColor: Colors.blueGrey,
-                      backgroundImage: NetworkImage(user.image),
+                      backgroundImage: pfp,
                     ),
                     //CLICK PFP TO GO TO THE USER PROFILE
                     onTap: () {

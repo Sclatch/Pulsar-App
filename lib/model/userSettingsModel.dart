@@ -19,6 +19,7 @@ class UserSettingsModel with ChangeNotifier {
       UserSettings userSettings = UserSettings(
         fontSize: 14,
         showImages: true,
+        login: null,
       );
       insertUserSettings(userSettings);
     }
@@ -88,6 +89,11 @@ class UserSettingsModel with ChangeNotifier {
 
     notifyListeners();
 
-    return UserSettings.fromMap(maps[0]);
+    if (maps.isEmpty) {
+      print("QUERY IS NULL");
+      return null;
+    } else {
+      return UserSettings.fromMap(maps[0]);
+    }
   }
 }

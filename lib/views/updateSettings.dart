@@ -22,21 +22,21 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
 
   @override
   void initState() {
-    super.initState();
     //LOADING THE USER's SETTINGS
     loadSettings();
+
+    super.initState();
   }
 
   Future<void> loadSettings() async {
-    var _temp = await model.getAllUserSettings();
+    var _temp = await model.getUserSettingsWithId(1);
 
     setState(() {
-      userSettings = _temp[0];
-      if (userSettings.fontSize == null) {
-        userSettings.fontSize = 14;
-      }
-      if (userSettings.showImages == null) {
-        userSettings.showImages = true;
+      if (_temp == null) {
+        userSettings =
+            UserSettings(fontSize: 14, showImages: true, login: null);
+      } else {
+        userSettings = _temp;
       }
     });
   }
@@ -52,73 +52,85 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
       ),
       body: Form(
         key: _formKey,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 15),
-                    child: Text(
-                      "Font Size:",
-                      textAlign: TextAlign.left,
+        child: FutureBuilder(
+            //This is how you search for a user
+            future: model.getUserSettingsWithId(1),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Text(
+                              "Font Size:",
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.78,
+                          alignment: Alignment.center,
+                          child: Slider(
+                            value: userSettings.fontSize.toDouble(),
+                            min: 10,
+                            max: 20,
+                            divisions: 5,
+                            label: userSettings.fontSize.round().toString(),
+                            onChanged: (double value) {
+                              setState(() {
+                                userSettings.fontSize = value.toInt();
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.78,
-                  alignment: Alignment.center,
-                  child: Slider(
-                    value: userSettings.fontSize.toDouble(),
-                    min: 10,
-                    max: 20,
-                    divisions: 5,
-                    label: userSettings.fontSize.round().toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        userSettings.fontSize = value.toInt();
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 15),
-                    child: Text(
-                      "Show Images:",
-                      textAlign: TextAlign.left,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Text(
+                              "Show Images:",
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: Checkbox(
+                            value: userSettings.showImages,
+                            onChanged: (bool value) => setState(() {
+                              userSettings.showImages = value;
+                            }),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: Checkbox(
-                    value: userSettings.showImages,
-                    onChanged: (bool value) => setState(() {
-                      userSettings.showImages = value;
-                    }),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+                  ],
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           UserSettings updatedUserSettings = UserSettings(
             fontSize: userSettings.fontSize.round(),
             showImages: userSettings.showImages,
+            login: userSettings.login,
           );
           Navigator.of(context).pop(updatedUserSettings);
         },

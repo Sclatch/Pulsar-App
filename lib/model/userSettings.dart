@@ -2,13 +2,15 @@ class UserSettings {
   int id;
   int fontSize;
   bool showImages;
+  String login;
 
-  UserSettings({this.fontSize, this.showImages});
+  UserSettings({this.fontSize, this.showImages, this.login});
 
   UserSettings.fromMap(Map<String, dynamic> map) {
     this.id = map['id'];
     this.fontSize = map['fontSize'];
     this.showImages = intToBool(map['showImages']);
+    this.login = map['login'];
   }
 
   Map<String, dynamic> toMap() {
@@ -16,6 +18,7 @@ class UserSettings {
       'id': this.id,
       'fontSize': this.fontSize,
       'showImages': boolToInt(this.showImages),
+      'login': this.login,
     };
   }
 
@@ -36,7 +39,7 @@ class UserSettings {
   }
 
   String toString() {
-    return 'Font Size: $fontSize\nShow Images: $showImages';
+    return 'Font Size: $fontSize\nShow Images: $showImages, Login: $login';
   }
 
   void setID(int id) {

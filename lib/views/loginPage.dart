@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../model/users.dart';
 import '../model/usersModel.dart';
+import '../model/userSettings.dart';
+import '../model/userSettingsModel.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -15,14 +17,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final userController = TextEditingController();
   final passController = TextEditingController();
-
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +97,29 @@ class _LoginPageState extends State<LoginPage> {
         print("INCORRECT PASSWORD");
       } else {
         print("LOGGED IN");
+        updateUserSettings(user.username);
       }
     }
+  }
+
+  Future<void> updateUserSettings(String login) async {
+    final model = UserSettingsModel();
+    UserSettings userSettings;
+
+    var _temp = await model.getUserSettingsWithId(1);
+
+    if (_temp == null) {
+      userSettings = UserSettings(fontSize: 14, showImages: true, login: null);
+    } else {
+      userSettings = _temp;
+    }
+
+    userSettings.login = login;
+
+    userSettings.setID(1);
+
+    model.updateUserSettings(userSettings);
+
+    print("Update called: $userSettings");
   }
 }

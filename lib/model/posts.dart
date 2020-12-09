@@ -10,6 +10,7 @@ class Post {
   List comments;
   Timestamp date;
   GeoPoint location;
+  String address;
   int likes;
   int dislikes;
 
@@ -23,6 +24,7 @@ class Post {
       this.comments,
       this.date,
       this.location,
+      this.address,
       this.likes,
       this.dislikes});
 
@@ -35,6 +37,7 @@ class Post {
     this.comments = map['comments'];
     this.date = map['date'];
     this.location = map['location'];
+    this.address = map['address'];
     this.likes = map['likes'];
     this.dislikes = map['dislikes'];
   }
@@ -48,13 +51,14 @@ class Post {
       'comments': this.comments,
       'date': this.date,
       'location': this.location,
+      'address': this.address,
       'likes': this.likes,
       'dislikes': this.dislikes,
     };
   }
 
   String toString() {
-    return '$user $title $content $image $comments $date $location $likes $dislikes';
+    return '$user $title $content $image $comments $date $location $address $likes $dislikes';
   }
 
   int totalLikes() {

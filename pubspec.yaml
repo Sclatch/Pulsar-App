@@ -38,6 +38,7 @@ dependencies:
   cloud_firestore:
   latlong: 
   charts_flutter:
+  flutter_map:
 
 dev_dependencies:
   flutter_test:

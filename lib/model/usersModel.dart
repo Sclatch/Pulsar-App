@@ -44,6 +44,9 @@ class UserModel {
   }
 
   Future<QuerySnapshot> searchUser(String name) async {
+    if (name == null) {
+      name = "";
+    }
     return await FirebaseFirestore.instance
         .collection('users')
         .where('username', isEqualTo: name)

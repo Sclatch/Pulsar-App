@@ -6,8 +6,9 @@ class User {
   String username;
   String password;
   String description;
-  Timestamp birthday;
   String image;
+  String background;
+  Timestamp birthday;
   DocumentReference reference;
 
   User(
@@ -15,6 +16,7 @@ class User {
       this.password,
       this.description,
       this.image,
+      this.background,
       this.birthday});
 
   User.fromMap(Map<String, dynamic> map, {this.reference}) {
@@ -23,6 +25,7 @@ class User {
     this.password = map['password'];
     this.description = map['description'];
     this.image = map['image'];
+    this.background = map['background'];
     this.birthday = map['birthday'];
   }
 
@@ -32,12 +35,13 @@ class User {
       'password': this.password,
       'description': this.description,
       'image': this.image,
+      'background': this.background,
       'birthday': this.birthday,
     };
   }
 
   String toString() {
-    return '$username $password $description $image $birthday';
+    return '$username $password $description $image $background $birthday';
   }
 
   String timeToDate() {

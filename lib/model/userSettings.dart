@@ -3,14 +3,16 @@ class UserSettings {
   int fontSize;
   bool showImages;
   String login;
+  int postCount;
 
-  UserSettings({this.fontSize, this.showImages, this.login});
+  UserSettings({this.fontSize, this.showImages, this.login, this.postCount});
 
   UserSettings.fromMap(Map<String, dynamic> map) {
     this.id = map['id'];
     this.fontSize = map['fontSize'];
     this.showImages = intToBool(map['showImages']);
     this.login = map['login'];
+    this.postCount = map['postCount'];
   }
 
   Map<String, dynamic> toMap() {
@@ -19,6 +21,7 @@ class UserSettings {
       'fontSize': this.fontSize,
       'showImages': boolToInt(this.showImages),
       'login': this.login,
+      'postCount': this.postCount,
     };
   }
 
@@ -39,7 +42,7 @@ class UserSettings {
   }
 
   String toString() {
-    return 'Font Size: $fontSize\nShow Images: $showImages, Login: $login';
+    return 'Font Size:$fontSize\nShow Images: $showImages\nLogin: $login\nPost Count: $postCount';
   }
 
   void setID(int id) {

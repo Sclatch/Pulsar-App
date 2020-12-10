@@ -29,16 +29,9 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
   }
 
   Future<void> loadSettings() async {
-    var _temp = await model.getUserSettingsWithId(1);
+    userSettings = await model.getUserSettingsWithId(1);
 
-    setState(() {
-      if (_temp == null) {
-        userSettings =
-            UserSettings(fontSize: 14, showImages: true, login: null);
-      } else {
-        userSettings = _temp;
-      }
-    });
+    setState(() {});
   }
 
   @override

@@ -72,9 +72,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 25),
                 Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
                       ButtonTheme(
                         height: 50,
                         minWidth: 150,
@@ -82,14 +82,15 @@ class _LoginPageState extends State<LoginPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.5),
                           ),
-                          child: Text("Register", textScaleFactor: 1.4,),
+                          child: Text(
+                            "Register",
+                            textScaleFactor: 1.4,
+                          ),
                           onPressed: () {
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RegisterPage()
-                              )
-                            );
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterPage()));
                           },
                         ),
                       ),
@@ -97,19 +98,19 @@ class _LoginPageState extends State<LoginPage> {
                         height: 50,
                         minWidth: 150,
                         child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.5),
-                          ),
-                          child: Text("Login", textScaleFactor: 1.4,),
-                          onPressed: () {
-                            checkLogin(userController.text, passController.text);
-                          }
-                        ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.5),
+                            ),
+                            child: Text(
+                              "Login",
+                              textScaleFactor: 1.4,
+                            ),
+                            onPressed: () {
+                              checkLogin(
+                                  userController.text, passController.text);
+                            }),
                       ),
-                      
-                    ]
-                  )
-                )
+                    ]))
               ])),
     );
   }
@@ -134,22 +135,15 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         print("LOGGED IN");
         updateUserSettings(user.username);
-        Future.delayed(Duration(milliseconds: 500)).then((value) => Navigator.pop(context));
+        Future.delayed(Duration(milliseconds: 500))
+            .then((value) => Navigator.pop(context));
       }
     }
   }
 
   Future<void> updateUserSettings(String login) async {
     final model = UserSettingsModel();
-    UserSettings userSettings;
-
-    var _temp = await model.getUserSettingsWithId(1);
-
-    if (_temp == null) {
-      userSettings = UserSettings(fontSize: 14, showImages: true, login: null);
-    } else {
-      userSettings = _temp;
-    }
+    UserSettings userSettings = await model.getUserSettingsWithId(1);
 
     userSettings.login = login;
 

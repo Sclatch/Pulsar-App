@@ -51,10 +51,10 @@ Widget drawerMenu(BuildContext context, Function state) {
                   return Drawer(
                       child: Container(
                           child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: _drawerButtons(context, user, loggedIn, pfp, background, state)
-                  )));
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: _drawerButtons(context, user, loggedIn,
+                                  pfp, background, state))));
                 } else {
                   return Center(
                     child: CircularProgressIndicator(),
@@ -84,15 +84,8 @@ Future<void> _updateUserSettings(BuildContext context) async {
 
 Future<UserSettings> checkUserSettings() async {
   final userSettingsModel = UserSettingsModel();
-  UserSettings userSettings;
 
-  var _temp = await userSettingsModel.getUserSettingsWithId(1);
-
-  if (_temp == null) {
-    userSettings = UserSettings(fontSize: 14, showImages: true, login: null);
-  } else {
-    userSettings = _temp;
-  }
+  UserSettings userSettings = await userSettingsModel.getUserSettingsWithId(1);
 
   userSettings.setID(1);
 
@@ -101,14 +94,8 @@ Future<UserSettings> checkUserSettings() async {
   return userSettings;
 }
 
-List<Widget> _drawerButtons(
-            BuildContext context,
-            User user, 
-            bool loggedIn, 
-            NetworkImage pfp, 
-            NetworkImage background, 
-            Function state) 
-  {
+List<Widget> _drawerButtons(BuildContext context, User user, bool loggedIn,
+    NetworkImage pfp, NetworkImage background, Function state) {
   List<Widget> buttons = [
     //HEADER DRAWER. USER PROFILE
     Container(
@@ -117,8 +104,7 @@ List<Widget> _drawerButtons(
       width: 500,
       decoration: BoxDecoration(
           color: Colors.lightBlue,
-          image: DecorationImage(
-              image: background, fit: BoxFit.cover)),
+          image: DecorationImage(image: background, fit: BoxFit.cover)),
       child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -137,129 +123,119 @@ List<Widget> _drawerButtons(
           ]),
     ),
     SizedBox(height: 15)
-    ];
+  ];
 
-    if (loggedIn) {
-      buttons.add(
-        //PROFILE BUTTON
-        FlatButton(
-          splashColor: Colors.lightBlue,
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ProfilePage(user: user)));
-          },
-          child: Container(
-              height: 60,
-              child: Row(children: <Widget>[
-                Icon(Icons.person, size: 30.0),
-                SizedBox(width: 15.0),
-                Text(
-                  "Profile",
-                  textScaleFactor: 1.30,
-                )
-              ])),
-        ),
-      );
-      buttons.add(
+  if (loggedIn) {
+    buttons.add(
+      //PROFILE BUTTON
+      FlatButton(
+        splashColor: Colors.lightBlue,
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ProfilePage(user: user)));
+        },
+        child: Container(
+            height: 60,
+            child: Row(children: <Widget>[
+              Icon(Icons.person, size: 30.0),
+              SizedBox(width: 15.0),
+              Text(
+                "Profile",
+                textScaleFactor: 1.30,
+              )
+            ])),
+      ),
+    );
+    buttons.add(
         //LOG OUT BUTTON
         FlatButton(
-          splashColor: Colors.lightBlue,
-          onPressed: () {
-            _logoutFunction(context, state);
-          },
-          child: Container(
-              height: 60,
-              child: Row(children: <Widget>[
-                Icon(Icons.settings_power, size: 30.0),
-                SizedBox(width: 15.0),
-                Text(
-                  "Log Out",
-                  textScaleFactor: 1.30,
-                )
-              ])),
-        )
-      );
-    } else {
-      buttons.add(
-        //LOG IN BUTTON
-        FlatButton(
-          splashColor: Colors.lightBlue,
-          onPressed: () {
-            _loginFunction(context, state);
-          },
-          child: Container(
-              height: 60,
-              child: Row(children: <Widget>[
-                Icon(Icons.input, size: 30.0),
-                SizedBox(width: 15.0),
-                Text(
-                  "Login",
-                  textScaleFactor: 1.30,
-                )
-              ])),
-        ),
-      );
-    }
+      splashColor: Colors.lightBlue,
+      onPressed: () {
+        _logoutFunction(context, state);
+      },
+      child: Container(
+          height: 60,
+          child: Row(children: <Widget>[
+            Icon(Icons.settings_power, size: 30.0),
+            SizedBox(width: 15.0),
+            Text(
+              "Log Out",
+              textScaleFactor: 1.30,
+            )
+          ])),
+    ));
+  } else {
+    buttons.add(
+      //LOG IN BUTTON
+      FlatButton(
+        splashColor: Colors.lightBlue,
+        onPressed: () {
+          _loginFunction(context, state);
+        },
+        child: Container(
+            height: 60,
+            child: Row(children: <Widget>[
+              Icon(Icons.input, size: 30.0),
+              SizedBox(width: 15.0),
+              Text(
+                "Login",
+                textScaleFactor: 1.30,
+              )
+            ])),
+      ),
+    );
+  }
 
-    buttons.add(
-      //SETTINGS BUTTON
-      FlatButton(
-        splashColor: Colors.lightBlue,
-        onPressed: () {
-          _updateUserSettings(context);
-        },
-        child: Container(
-            height: 60,
-            child: Row(children: <Widget>[
-              Icon(Icons.settings, size: 30.0),
-              SizedBox(width: 15.0),
-              Text(
-                "Settings",
-                textScaleFactor: 1.30,
-              )
-            ])),
-      ),
-    );
-    buttons.add(
-      //ABOUT BUTTON
-      FlatButton(
-        splashColor: Colors.lightBlue,
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AboutPage()));
-        },
-        child: Container(
-            height: 60,
-            child: Row(children: <Widget>[
-              Icon(Icons.error, size: 30.0),
-              SizedBox(width: 15.0),
-              Text(
-                "About",
-                textScaleFactor: 1.30,
-              )
-            ])),
-      ),
-    );
+  buttons.add(
+    //SETTINGS BUTTON
+    FlatButton(
+      splashColor: Colors.lightBlue,
+      onPressed: () {
+        _updateUserSettings(context);
+      },
+      child: Container(
+          height: 60,
+          child: Row(children: <Widget>[
+            Icon(Icons.settings, size: 30.0),
+            SizedBox(width: 15.0),
+            Text(
+              "Settings",
+              textScaleFactor: 1.30,
+            )
+          ])),
+    ),
+  );
+  buttons.add(
+    //ABOUT BUTTON
+    FlatButton(
+      splashColor: Colors.lightBlue,
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AboutPage()));
+      },
+      child: Container(
+          height: 60,
+          child: Row(children: <Widget>[
+            Icon(Icons.error, size: 30.0),
+            SizedBox(width: 15.0),
+            Text(
+              "About",
+              textScaleFactor: 1.30,
+            )
+          ])),
+    ),
+  );
 
   return buttons;
 }
 
 void _loginFunction(BuildContext context, Function state) async {
   await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => LoginPage()
-    )
-  );
+      context, MaterialPageRoute(builder: (context) => LoginPage()));
   state();
 }
 
-void _logoutFunction(BuildContext context, Function state) async{
+void _logoutFunction(BuildContext context, Function state) async {
   bool confirmation = await showDialog<bool>(
       context: context,
       barrierDismissible: true,
@@ -314,10 +290,9 @@ void _logoutFunction(BuildContext context, Function state) async{
     model.updateUserSettings(userSettings);
 
     print("Update called: $userSettings");
-    
+
     Navigator.pop(context);
 
     Future.delayed(Duration(milliseconds: 500)).then((value) => state());
-    
   }
 }

@@ -34,51 +34,73 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
     final PostsModel postsModel = PostsModel();
     final UserModel usersModel = UserModel();
 
-    //Users, Posts, and Comments all work in either of the following ways
-    //This is how you access the posts and update as they update
-
-    return StreamBuilder(
-        stream: postsModel.streamAllPosts(),
+    return FutureBuilder(
+        //This is how you search for a user
+        future: checkUserSettings(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List posts = snapshot.data.docs;
-            //posts = posts.reversed.toList();
+            UserSettings settings = snapshot.data;
 
-            //This is how you access a specific comments in a post
+            print(settings);
 
-            return ListView.builder(
-              padding: const EdgeInsets.all(8.0),
-              itemCount: posts.length,
-              itemBuilder: (BuildContext context, int index) {
-                //This is just to show the first instance of the posts
-                DocumentSnapshot postDocument = posts[index];
+            //Users, Posts, and Comments all work in either of the following ways
+            //This is how you access the posts and update as they update
+            return StreamBuilder(
+                stream: postsModel.streamAllPosts(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List posts = snapshot.data.docs;
 
-                //This takes a post from the database and makes it an instance of post
+                    int newPosts = posts.length - settings.postCount;
 
-                final post = Post.fromMap(postDocument.data(),
-                    reference: postDocument.reference);
+                    //posts = posts.reversed.toList();
 
-                return FutureBuilder(
-                    //This is how you search for a user
-                    future: usersModel.searchUser(post.user),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        List users = snapshot.data.docs;
+                    //This is how you access a specific comments in a post
 
-                        DocumentSnapshot userDocument = users[0];
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      itemCount: posts.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        //This is just to show the first instance of the posts
+                        DocumentSnapshot postDocument = posts[index];
 
-                        final user = User.fromMap(userDocument.data(),
-                            reference: userDocument.reference);
+                        //This takes a post from the database and makes it an instance of post
 
-                        return PulseCard(post: post, user: user);
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    });
+                        Post post = Post.fromMap(postDocument.data(),
+                            reference: postDocument.reference);
 
-                /*return StreamBuilder(
+                        if (posts.length > settings.postCount) {
+                          settings.postCount = posts.length;
+                          updateUserSettings(posts.length);
+                        }
+
+                        if (newPosts > 0) {
+                          newPosts -= 1;
+                          //This is where I will call the notification
+                          print("NEW POST FROM USER ${post.user}");
+                        }
+
+                        return FutureBuilder(
+                            //This is how you search for a user
+                            future: usersModel.searchUser(post.user),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                List users = snapshot.data.docs;
+
+                                DocumentSnapshot userDocument = users[0];
+
+                                final user = User.fromMap(userDocument.data(),
+                                    reference: userDocument.reference);
+
+                                return PulseCard(post: post, user: user);
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            });
+
+                        /*return StreamBuilder(
                     stream: commentsModel.streamAllComments(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -104,13 +126,55 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                         );
                       }
                     });*/
-              },
-            );
+                      },
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                });
           } else {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
         });
+  }
+
+  Future<UserSettings> checkUserSettings() async {
+    final userSettingsModel = UserSettingsModel();
+
+    UserSettings userSettings;
+
+    var _temp = await userSettingsModel.getUserSettingsWithId(1);
+
+    if (_temp == null) {
+      userSettings = UserSettings(
+        fontSize: 14,
+        showImages: true,
+        login: null,
+        postCount: 0,
+      );
+
+      userSettings.setID(1);
+
+      userSettingsModel.updateUserSettings(userSettings);
+    } else {
+      userSettings = _temp;
+    }
+
+    return userSettings;
+  }
+
+  Future<void> updateUserSettings(int postCount) async {
+    final model = UserSettingsModel();
+    UserSettings userSettings = await model.getUserSettingsWithId(1);
+
+    userSettings.postCount = postCount;
+
+    userSettings.setID(1);
+
+    model.updateUserSettings(userSettings);
   }
 }

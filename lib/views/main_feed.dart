@@ -27,7 +27,8 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final UserSettingsModel userSettingsModel = context.watch<UserSettingsModel>();
+    final UserSettingsModel userSettingsModel =
+        context.watch<UserSettingsModel>();
 
     final CommentsModel commentsModel = CommentsModel();
     final PostsModel postsModel = PostsModel();
@@ -41,7 +42,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List posts = snapshot.data.docs;
-            posts = posts.reversed.toList();
+            //posts = posts.reversed.toList();
 
             //This is how you access a specific comments in a post
 
@@ -69,7 +70,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                         final user = User.fromMap(userDocument.data(),
                             reference: userDocument.reference);
 
-                        return PulseCard(post: post,user: user);
+                        return PulseCard(post: post, user: user);
                       } else {
                         return Center(
                           child: CircularProgressIndicator(),

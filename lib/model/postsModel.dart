@@ -32,12 +32,17 @@ class PostsModel {
   }
 
   Future<QuerySnapshot> getAllPosts() async {
-                                                                        //can't order in descending order, we do that in main_feed.dart
-    return await FirebaseFirestore.instance.collection('posts').orderBy('date').get();
+    return await FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('date', descending: true)
+        .get();
   }
 
   Stream<QuerySnapshot> streamAllPosts() {
-    return FirebaseFirestore.instance.collection('posts').orderBy('date').snapshots();
+    return FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('date', descending: true)
+        .snapshots();
   }
 
   Future<DocumentSnapshot> getPost(String id) async {
@@ -49,7 +54,7 @@ class PostsModel {
         .collection('posts')
         .where('content', isGreaterThanOrEqualTo: term)
         //.where('content', isEqualTo: term)
-        .orderBy('date')
+        .orderBy('date', descending: true)
         .get();
   }
 
@@ -57,6 +62,7 @@ class PostsModel {
     return await FirebaseFirestore.instance
         .collection('posts')
         .where('user', isEqualTo: name)
+        .orderBy('date', descending: true)
         .get();
   }
 }

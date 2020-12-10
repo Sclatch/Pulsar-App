@@ -107,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
               //height: MediaQuery.of(context).size.height * 0.60,
               child: FutureBuilder(
                   //This is how you search for a user
-                  future: postsModel.searchPostUser(username),
+                  future: postsModel.searchPost(username),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List posts = snapshot.data.docs;

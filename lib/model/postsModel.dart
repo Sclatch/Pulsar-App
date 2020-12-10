@@ -47,7 +47,9 @@ class PostsModel {
   Future<QuerySnapshot> searchPost(String term) async {
     return await FirebaseFirestore.instance
         .collection('posts')
-        .where('title', isEqualTo: term)
+        .where('content', isGreaterThanOrEqualTo: term)
+        //.where('content', isEqualTo: term)
+        .orderBy('date')
         .get();
   }
 

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../model/users.dart';
+import '../model/usersModel.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
@@ -11,6 +15,10 @@ class _RegisterPageState extends State<RegisterPage> {
   String username;
   String password;
   String conPassword;
+  UserModel usersModel = UserModel();
+
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(
                   fontSize: 18,
                 ),
+                controller: usernameController,
                 decoration: new InputDecoration(
                   border: new OutlineInputBorder(
                       borderSide: BorderSide(width: 0.75),
@@ -62,6 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(
                   fontSize: 18,
                 ),
+                controller: passwordController,
                 decoration: new InputDecoration(
                   border: new OutlineInputBorder(
                       borderSide: BorderSide(width: 0.75),
@@ -105,6 +115,19 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   child: Text("Register", textScaleFactor: 1.4,),
                   onPressed: () {
+                    usersModel.getAllUsers().then((users) {
+                      print(users.toString());
+                    });
+                    usersModel.insertUser(
+                      User(
+                        username: usernameController.text,
+                        password: passwordController.text,
+                        description: "Default Description",
+                        image: "",
+                        background: "",
+                        birthday: new Timestamp(0,0),
+                      ),
+                    );
                     Navigator.pop(context);
                   },
                 ),

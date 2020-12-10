@@ -92,18 +92,19 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             height: 25,
             child: RaisedButton(
-                child: Text("Edit Profile"),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditUserPage(user: this.user)));
-                }),
+              child: Text("Edit Profile"),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditUserPage(user: this.user)));
+              }
+            ),
           ),
-          Container(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.60,
+          Expanded(
+              //padding: const EdgeInsets.symmetric(horizontal: 5),
+              //width: MediaQuery.of(context).size.width,
+              //height: MediaQuery.of(context).size.height * 0.60,
               child: FutureBuilder(
                   //This is how you search for a user
                   future: postsModel.searchPostUser(username),
@@ -121,8 +122,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 reference: postDocument.reference);
                             //print(post);
 
-                            return pulseCard(context, post, user);
-                          });
+                            return PulseCard(post: post, user: user);
+                          }
+                      );
                     } else {
                       return Center(
                         child: CircularProgressIndicator(),

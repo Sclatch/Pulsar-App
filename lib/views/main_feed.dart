@@ -27,8 +27,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final UserSettingsModel userSettingsModel =
-        context.watch<UserSettingsModel>();
+    final UserSettingsModel userSettingsModel = context.watch<UserSettingsModel>();
 
     final CommentsModel commentsModel = CommentsModel();
     final PostsModel postsModel = PostsModel();
@@ -58,8 +57,6 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                 final post = Post.fromMap(postDocument.data(),
                     reference: postDocument.reference);
 
-                print(post);
-
                 return FutureBuilder(
                     //This is how you search for a user
                     future: usersModel.searchUser(post.user),
@@ -72,11 +69,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                         final user = User.fromMap(userDocument.data(),
                             reference: userDocument.reference);
 
-                        print(user);
-
-                        print(user.timeToDate());
-
-                        return pulseCard(context, post, user);
+                        return PulseCard(post: post,user: user);
                       } else {
                         return Center(
                           child: CircularProgressIndicator(),
@@ -84,7 +77,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                       }
                     });
 
-                return StreamBuilder(
+                /*return StreamBuilder(
                     stream: commentsModel.streamAllComments(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -109,24 +102,9 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                           child: CircularProgressIndicator(),
                         );
                       }
-                    });
+                    });*/
               },
             );
-
-            //This is how you can get the User Settings
-            return FutureBuilder(
-                future: userSettingsModel.getAllUserSettings(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<UserSettings> userSettings = snapshot.data;
-                    print(userSettings[0]);
-                    return Text("$userSettings");
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                });
           } else {
             return Center(
               child: CircularProgressIndicator(),

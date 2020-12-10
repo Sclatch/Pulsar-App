@@ -8,10 +8,26 @@ import '../views/profilePage.dart';
 import '../views/statsPost.dart';
 import '../views/mapPage.dart';
 
-bool _isDislike = false;
-bool _isLike = false;
+class PulseCard extends StatefulWidget {
+  PulseCard({Key key, this.post, this.user}) : super(key: key);
+  final User user;
+  final Post post;
 
-Widget pulseCard(BuildContext context, Post post, User user) {
+  @override
+  _PulseCardState createState() => _PulseCardState(post: post, user: user);
+}
+
+
+class _PulseCardState extends State<PulseCard> {
+  final Post post;
+  final User user;
+  bool _isDislike = false;
+  bool _isLike = false;
+
+  _PulseCardState ({this.post, this.user});
+
+  @override
+  Widget build(BuildContext context) {
   PostsModel model = new PostsModel();
   NetworkImage pfp;
 
@@ -19,9 +35,10 @@ Widget pulseCard(BuildContext context, Post post, User user) {
 
   if(user.image != null) {
     pfp = NetworkImage(user.image);
-  } 
+  }
 
   return Container(
+    
       padding: const EdgeInsets.all(5),
       child: Column(children: <Widget>[
         Container(
@@ -274,7 +291,11 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                     _isLike=false;
                   }
                   _isDislike = false;
-                  model.updatePost(post);
+                  
+                  setState(() {
+                    model.updatePost(post);
+                  });
+                  
                 }),
                 //COMMENT
                 GestureDetector(
@@ -314,10 +335,14 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                       _isDislike=false;
                     }
                     _isLike = false;
-                    model.updatePost(post);
+
+                    setState(() {
+                      model.updatePost(post);
+                    });
                   },
                 )
               ]),
         )
       ]));
+  }
 }

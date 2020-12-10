@@ -8,9 +8,10 @@ import '../views/profilePage.dart';
 import '../views/statsPost.dart';
 import '../views/mapPage.dart';
 
+bool _isDislike = false;
+bool _isLike = false;
+
 Widget pulseCard(BuildContext context, Post post, User user) {
-  bool _isDislike = false;
-  bool _isLike = false;
   PostsModel model = new PostsModel();
   NetworkImage pfp;
 
@@ -253,31 +254,28 @@ Widget pulseCard(BuildContext context, Post post, User user) {
               children: <Widget>[
                 //LIKE
                 IconButton(
-                    icon: Icon(
-                      Icons.thumb_up,
-                      color: (_isLike) ? Colors.lightBlue : Colors.white,
-                    ),
-                    splashRadius: 20,
-                    onPressed: () {
-                      /*setState(() {
-                  });*/
-                      if (_isLike = false) {
-                        //adjust likes
-                        if (_isDislike = true) {
-                          post.likes += 2;
-                        } else {
-                          post.likes++;
-                        }
-                        //set like state
-                        _isDislike = false;
-                        _isLike = true;
-                      } else {
-                        //adjust likes and like state
-                        post.likes--;
-                        _isLike = false;
-                      }
-                      model.updatePost(post);
-                    }),
+                  icon: Icon(
+                    Icons.thumb_up,
+                    color: (_isLike) ? Colors.lightBlue : Colors.white,
+                  ),
+                  splashRadius: 20,
+                  onPressed: () {
+                    /*setState(() {
+                });*/
+                  if (!_isLike) {
+                    post.likes++;
+                    if(_isDislike) {
+                      post.dislikes--;
+                    }
+                    _isLike=true;
+                  }
+                  else if(_isLike) {
+                    post.likes--;
+                    _isLike=false;
+                  }
+                  _isDislike = false;
+                  model.updatePost(post);
+                }),
                 //COMMENT
                 GestureDetector(
                   child: Container(
@@ -298,27 +296,24 @@ Widget pulseCard(BuildContext context, Post post, User user) {
                 //DISLIKE
                 IconButton(
                   icon: Icon(Icons.thumb_down,
-                      color: (_isDislike) ? Colors.pink : Colors.white),
+                      color: (_isDislike) ? Colors.purple : Colors.white),
                   splashRadius: 20,
                   splashColor: Colors.purple,
                   onPressed: () {
                     /*setState(() {
                   });*/
-                    if (_isDislike = false) {
-                      //adjust likes
-                      if (_isLike = true) {
-                        post.likes -= 2;
-                      } else {
+                    if (!_isDislike) {
+                      post.dislikes++;
+                      if(_isLike) {
                         post.likes--;
                       }
-                      //set like state
-                      _isLike = false;
-                      _isDislike = true;
-                    } else {
-                      //adjust likes and like state
-                      post.likes++;
-                      _isDislike = false;
+                      _isDislike=true;
                     }
+                    else if(_isDislike) {
+                      post.dislikes--;
+                      _isDislike=false;
+                    }
+                    _isLike = false;
                     model.updatePost(post);
                   },
                 )

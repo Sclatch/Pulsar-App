@@ -5,12 +5,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'comments.dart';
 
 class CommentsModel {
-  Future<void> insertComment(Comment comment) async {
-    return await FirebaseFirestore.instance
+  Future<DocumentReference> insertComment(Comment comment) async {
+    DocumentReference reference;
+    await FirebaseFirestore.instance
         .collection('comments')
         .add(comment.toMap())
-        .then((value) => print("Comment Added"))
+        .then((value) => reference = value)
         .catchError((error) => print("Failed to add comment: $error"));
+
+    return reference;
   }
 
   Future<void> updateComment(Comment comment) {
@@ -37,6 +40,10 @@ class CommentsModel {
 
   Stream<QuerySnapshot> streamAllComments() {
     return FirebaseFirestore.instance.collection('comments').snapshots();
+  }
+
+  Stream<DocumentSnapshot> streamPostComments(String id) {
+    return FirebaseFirestore.instance.collection('posts').doc(id).snapshots();
   }
 
   Future<DocumentSnapshot> getComment(String id) async {

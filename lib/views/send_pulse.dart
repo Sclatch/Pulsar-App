@@ -27,6 +27,7 @@ class _SendPulseState extends State<SendPulse> {
   String address = "Loading...";
   String username;
   User user;
+  Color sendButtonColor = Colors.grey;
 
   GeoPoint location;
   TextEditingController pulseTextController = TextEditingController();
@@ -39,35 +40,45 @@ class _SendPulseState extends State<SendPulse> {
     super.initState();
     _notifications.init();
 
-    _geolocator
-        .checkGeolocationPermissionStatus()
-        .then((GeolocationStatus status) {
-      print('Geolocation Status: $status');
-    });
-
-    _geolocator
-        .getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
-    )
-        .then((Position userLocation) {
-      centre = LatLng(userLocation.latitude, userLocation.longitude);
-
-      _geolocator
-          .placemarkFromCoordinates(
-              userLocation.latitude, userLocation.longitude)
-          .then((List<Placemark> place) {
-        setState(() {
-          address = place[0].subThoroughfare + " " + place[0].thoroughfare;
-          location =
-              GeoPoint(place[0].position.latitude, place[0].position.longitude);
+    GPSEnabled(_geolocator).then((status) {
+      if(status == true) {
+        _geolocator
+            .checkGeolocationPermissionStatus()
+            .then((GeolocationStatus status) {
+          print('Geolocation Status: $status');
         });
-      });
+        
+        _geolocator
+            .getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best,
+        )
+            .then((Position userLocation) {
+          centre = LatLng(userLocation.latitude, userLocation.longitude);
+
+          _geolocator
+              .placemarkFromCoordinates(
+                  userLocation.latitude, userLocation.longitude)
+              .then((List<Placemark> place) {
+            setState(() {
+              address = place[0].subThoroughfare + " " + place[0].thoroughfare;
+              location = GeoPoint(place[0].position.latitude, place[0].position.longitude);
+              sendButtonColor = Colors.blue;
+            });
+          });
+        });
+      }
+      else {
+        sendButtonColor = Colors.blue;
+        address="Location Disabled";
+      }
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
     final UserModel usersModel = UserModel();
+    final PostsModel postsModel = PostsModel();
     //CHECK IF USER IS LOGGED IN OR NOT
     return FutureBuilder(
         future: checkUserSettings(),
@@ -82,6 +93,7 @@ class _SendPulseState extends State<SendPulse> {
                     User user;
                     if (snapshot.data.docs.isEmpty) {
                       username = null;
+                      sendButtonColor = Colors.grey;
                     } else {
                       DocumentSnapshot userDocument = snapshot.data.docs[0];
 
@@ -123,6 +135,7 @@ class _SendPulseState extends State<SendPulse> {
                               style: TextStyle(
                                 fontSize: 18.0,
                               ),
+                              controller: pulseImageURLController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(width: 0.10),
@@ -154,29 +167,31 @@ class _SendPulseState extends State<SendPulse> {
                                 padding: const EdgeInsets.only(top: 5),
                                 width: 325,
                                 child: RaisedButton(
+                                  color: sendButtonColor, //button color
                                   child: Text(
                                     "Send",
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 20,),
                                   ),
                                   onPressed: () {
                                     //if the location data has been obtained
-                                    if (address != "Loading..." &&
-                                        username != null) {
+                                    if (address != "Loading..." && username != null) {
                                       print("Send something");
 
-                                      Post(
-                                        user: username,
-                                        content: pulseTextController.text,
-                                        image: pulseImageURLController.text,
-                                        comments: List(),
-                                        date:
-                                            Timestamp.fromDate(DateTime.now()),
-                                        location: location,
-                                        address: address,
-                                        likes: 0,
-                                        dislikes: 0,
-                                      );
 
+                                      postsModel.insertPost(
+                                        Post(
+                                          user: username,
+                                          content: pulseTextController.text,
+                                          image: pulseImageURLController.text,
+                                          comments: List(),
+                                          date:
+                                              Timestamp.fromDate(DateTime.now()),
+                                          location: location,
+                                          address: address,
+                                          likes: 0,
+                                          dislikes: 0,
+                                        ),
+                                      );
                                       _notifications.sendNotificationNow(
                                           "Post Sent", "", "");
                                       final snackBar = SnackBar(
@@ -228,4 +243,8 @@ Future<UserSettings> checkUserSettings() async {
   userSettingsModel.updateUserSettings(userSettings);
 
   return userSettings;
+}
+
+Future<bool> GPSEnabled(geolocator) async {
+  return (await geolocator.isLocationServiceEnabled());
 }

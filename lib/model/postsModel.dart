@@ -32,11 +32,11 @@ class PostsModel {
   }
 
   Future<QuerySnapshot> getAllPosts() async {
-    return await FirebaseFirestore.instance.collection('posts').get();
+    return await FirebaseFirestore.instance.collection('posts').orderBy('date', descending: true).get();
   }
 
   Stream<QuerySnapshot> streamAllPosts() {
-    return FirebaseFirestore.instance.collection('posts').snapshots();
+    return FirebaseFirestore.instance.collection('posts').orderBy('date').snapshots();
   }
 
   Future<DocumentSnapshot> getPost(String id) async {

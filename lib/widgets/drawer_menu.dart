@@ -35,35 +35,32 @@ Widget drawerMenu(BuildContext context) {
                   } else {
                     DocumentSnapshot userDocument = snapshot.data.docs[0];
 
-                  user = User.fromMap(userDocument.data(),
-                    reference: userDocument.reference);
+                    user = User.fromMap(userDocument.data(),
+                        reference: userDocument.reference);
                   }
 
-                  if(user.background != null){
+                  if (user.background != null) {
                     background = NetworkImage(user.background);
                   }
-                  if(user.image != null) {
+                  if (user.image != null) {
                     pfp = NetworkImage(user.image);
                   }
 
                   return Drawer(
-                    child: Container(
-                      child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
+                      child: Container(
+                          child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
                       //HEADER DRAWER. USER PROFILE
                       Container(
                         padding: EdgeInsets.only(left: 15, bottom: 15),
                         height: 175,
                         width: 500,
                         decoration: BoxDecoration(
-                          color: Colors.lightBlue,
-                          image: DecorationImage(
-                            image: background,
-                            fit: BoxFit.cover
-                          )
-                        ),
+                            color: Colors.lightBlue,
+                            image: DecorationImage(
+                                image: background, fit: BoxFit.cover)),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -87,9 +84,10 @@ Widget drawerMenu(BuildContext context) {
                         splashColor: Colors.lightBlue,
                         onPressed: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage(user: user))
-                          );
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProfilePage(user: user)));
                         },
                         child: Container(
                             height: 60,
@@ -107,11 +105,9 @@ Widget drawerMenu(BuildContext context) {
                         splashColor: Colors.lightBlue,
                         onPressed: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage()
-                            )
-                          );
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
                         },
                         child: Container(
                             height: 60,
@@ -156,20 +152,16 @@ Widget drawerMenu(BuildContext context) {
                                 "Settings",
                                 textScaleFactor: 1.30,
                               )
-                            ]
-                          )
-                        ),
+                            ])),
                       ),
                       //ABOUT BUTTON
                       FlatButton(
                         splashColor: Colors.lightBlue,
                         onPressed: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AboutPage()
-                            )
-                          );
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AboutPage()));
                         },
                         child: Container(
                             height: 60,
@@ -230,62 +222,55 @@ Future<UserSettings> checkUserSettings() async {
   return userSettings;
 }
 
-void _logoutFunction(BuildContext context) async{
+void _logoutFunction(BuildContext context) async {
   bool confirmation = await showDialog<bool>(
-    context: context,
-    barrierDismissible: true,
-    builder: (BuildContext context){
-      return AlertDialog(
-        title: Text("Log Out?"),
-        content: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: Icon(
-                  Icons.sentiment_very_dissatisfied,
-                  size: 40
-                )
-              ),
-              Flexible(
-                flex: 3,
-                child: Text(
-                  "Once you log out, you have to log-in back again. There will be less star in space",
-                  textScaleFactor: 1.1,
-                )
-              )
-              
-            ],
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Log Out?"),
+          content: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Flexible(
+                    flex: 1,
+                    child: Icon(Icons.sentiment_very_dissatisfied, size: 40)),
+                Flexible(
+                    flex: 3,
+                    child: Text(
+                      "Once you log out, you have to log-in back again. There will be less star in space",
+                      textScaleFactor: 1.1,
+                    ))
+              ],
+            ),
           ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            textColor: Colors.lightBlueAccent,
-            onPressed: (){
-              Navigator.of(context).pop(false);
-            },
-            child: Text("Cancel")
-          ),
-          FlatButton(
-            textColor: Colors.lightBlueAccent,
-            onPressed: (){
-              Navigator.of(context).pop(true);
-            },
-            child: Text("Confirm")
-          )
-        ],
-      );
-    }
-  );
-  if(confirmation == null) {
+          actions: <Widget>[
+            FlatButton(
+                textColor: Colors.lightBlueAccent,
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text("Cancel")),
+            FlatButton(
+                textColor: Colors.lightBlueAccent,
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: Text("Confirm"))
+          ],
+        );
+      });
+  if (confirmation == null) {
     confirmation = false;
   }
-  if(confirmation == true) {
+  if (confirmation == true) {
     final model = UserSettingsModel();
     UserSettings userSettings;
 
-    userSettings = UserSettings(fontSize: 14, showImages: true, login: null);
+    userSettings = await model.getUserSettingsWithId(1);
+
+    userSettings.login = null;
 
     userSettings.setID(1);
 

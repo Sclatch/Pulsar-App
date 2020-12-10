@@ -18,7 +18,6 @@ class Post {
 
   Post(
       {this.user,
-      this.title,
       this.content,
       this.image,
       this.comments,
@@ -31,7 +30,6 @@ class Post {
   Post.fromMap(Map<String, dynamic> map, {this.reference}) {
     this.id = this.reference.id;
     this.user = map['user'];
-    this.title = map['title'];
     this.content = map['content'];
     this.image = map['image'];
     this.comments = map['comments'];
@@ -45,7 +43,6 @@ class Post {
   Map<String, dynamic> toMap() {
     return {
       'user': this.user,
-      'title': this.title,
       'content': this.content,
       'image': this.image,
       'comments': this.comments,
@@ -58,7 +55,7 @@ class Post {
   }
 
   String toString() {
-    return '$user $title $content $image $comments $date $location $address $likes $dislikes';
+    return '$user $content $image $comments $date $location $address $likes $dislikes';
   }
 
   int totalLikes() {

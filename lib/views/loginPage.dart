@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import '../model/users.dart';
 import '../model/usersModel.dart';
 import '../model/userSettings.dart';
 import '../model/userSettingsModel.dart';
+
+import 'registerPage.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -80,7 +83,14 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(12.5),
                           ),
                           child: Text("Register", textScaleFactor: 1.4,),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegisterPage()
+                              )
+                            );
+                          },
                         ),
                       ),
                       ButtonTheme(

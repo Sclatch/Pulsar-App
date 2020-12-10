@@ -7,6 +7,7 @@ import '../model/users.dart';
 import '../views/profilePage.dart';
 import '../views/statsPost.dart';
 import '../views/mapPage.dart';
+import '../views/commentPage.dart';
 
 class PulseCard extends StatefulWidget {
   PulseCard({Key key, this.post, this.user}) : super(key: key);
@@ -311,7 +312,12 @@ class _PulseCardState extends State<PulseCard> {
                     ),
                   ])),
                   onTap: () {
-                    print("Write a Reply pop up");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CommentPage(post: post)
+                      )
+                    );
                   },
                 ),
                 //DISLIKE

@@ -1,9 +1,16 @@
+import 'package:Pulsar/model/userSettingsModel.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong/latlong.dart';
 
 
 import '../model/notifications.dart';
+import '../model/postsModel.dart';
+import '../model/userSettings.dart';
+import '../model/usersModel.dart';
+import '../model/users.dart';
+import '../model/posts.dart';
 
 class SendPulse extends StatefulWidget {
   SendPulse({Key key, this.title}) : super(key: key);
@@ -19,6 +26,12 @@ class _SendPulseState extends State<SendPulse> {
   var _geolocator = Geolocator();
   LatLng centre;
   String address = "Loading...";
+  String username;
+  User user;
+
+  GeoPoint location;
+  TextEditingController pulseTextController = TextEditingController();
+  TextEditingController pulseImageURLController = TextEditingController();
   
   final _notifications = Notifications();
 
@@ -43,6 +56,7 @@ class _SendPulseState extends State<SendPulse> {
         (List<Placemark> place) {
           setState(() {
             address = place[0].subThoroughfare + " " + place[0].thoroughfare;
+            location = GeoPoint(place[0].position.latitude, place[0].position.longitude);
           });
         }
       );
@@ -51,99 +65,183 @@ class _SendPulseState extends State<SendPulse> {
 
   @override
   Widget build(BuildContext context) {
-    
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(15.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          CircleAvatar(
-            radius: 40.0,
-            backgroundColor: Colors.blueGrey
-          ),
-          SizedBox(height: 10),
-          Text(
-            "Send a Pulse",
-            textScaleFactor: 1.5
-          ),
-          SizedBox(height: 15),
-          TextField(
-            style: TextStyle(
-              fontSize: 25.0,
-            ),
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(
-                borderSide: BorderSide(width: 0.75),
-              ),
-              hintText: "What's on your mind?",
-              isDense: true,
-            ),
-            maxLines: 4,
-            //PLEASE WRITE THE FUNCTION HERE TO RETURN THE VALUE
-            onChanged: (value) {},
-          ),
-          SizedBox(height: 0.5),
-          TextField(
-            style: TextStyle(
-              fontSize: 18.0,
-            ),
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(
-                borderSide: BorderSide(width: 0.10),
-              ),
-              hintText: "Link to your Image",
-              isDense: true,
-            ),
-            maxLines: 1,
-            //PLEASE WRITE THE FUNCTION HERE FOR IMAGE
-            onChanged: (value) {},
-          ),
-          //GPS Location
-          Container(
-            padding: const EdgeInsets.only(top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.place),
-                SizedBox(width: 5),
-                Text(
-                  "$address",
-                  textScaleFactor: 1.25,
-                )
-              ]
-            ),
-          ),
-          //SEND BUTTON
-          Container(
-            padding: const EdgeInsets.only(top: 5),
-            width: 325,
-            child: RaisedButton(
-              child: Text(
-                "Send",
-                style: TextStyle(fontSize: 20),
-              ),
-              onPressed: () {
-                print("Send something");
-                _notifications.sendNotificationNow("Post Sent", "", "");
-                final snackBar = SnackBar(
-                  content: Text("Pulse Sent!",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17
-                    ),
-                  ),
-                  backgroundColor: Colors.grey[900],
-                );
+    final UserModel usersModel = UserModel();
+    //CHECK IF USER IS LOGGED IN OR NOT
+    return FutureBuilder(
+      future: checkUserSettings(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          UserSettings userSettings = snapshot.data;
 
-                Scaffold.of(context).showSnackBar(snackBar);
-              },
-            )
-          ),
-        ],
-      )
-    );
+          return FutureBuilder(
+              future: usersModel.searchUser(userSettings.login),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  User user;
+                  if (snapshot.data.docs.isEmpty) {
+                    username = null;
+                  } else {
+                    DocumentSnapshot userDocument = snapshot.data.docs[0];
+
+                    user = User.fromMap(userDocument.data(),
+                        reference: userDocument.reference);
+                      username=user.username;
+                  }
+
+              return Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 40.0,
+                      backgroundColor: Colors.blueGrey
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Send a Pulse",
+                      textScaleFactor: 1.5
+                    ),
+                    SizedBox(height: 15),
+                    TextField(
+                      style: TextStyle(
+                        fontSize: 25.0, 
+                      ),
+                      controller: pulseTextController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(width: 0.75),
+                        ),
+                        hintText: "What's on your mind?",
+                        isDense: true,
+                      ),
+                      maxLines: 4,
+                      //PLEASE WRITE THE FUNCTION HERE TO RETURN THE VALUE
+                      onChanged: (value) {},
+                    ),
+                    SizedBox(height: 0.5),
+                    TextField(
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(width: 0.10),
+                        ),
+                        hintText: "Link to your Image",
+                        isDense: true,
+                      ),
+                      maxLines: 1,
+                      //PLEASE WRITE THE FUNCTION HERE FOR IMAGE
+                      onChanged: (value) {},
+                    ),
+                    //GPS Location
+                    Container(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.place),
+                          SizedBox(width: 5),
+                          Text(
+                            "$address",
+                            textScaleFactor: 1.25,
+                          )
+                        ]
+                      ),
+                    ),
+                    //SEND BUTTON
+                    Container(
+                      padding: const EdgeInsets.only(top: 5),
+                      width: 325,
+                      child: RaisedButton(
+                        child: Text(
+                          "Send",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          //if the location data has been obtained
+                          if(address!="Loading..." && username!=null) {
+                            print("Send something");
+                            
+                            Post(user: username,
+                                title: "A New Post",
+                                content: pulseTextController.text,
+                                image: pulseImageURLController.text,
+                                comments: List(),
+                                date: Timestamp.fromDate(DateTime.now()), 
+                                location: location,
+                                address: address,
+                                likes: 0,
+                                dislikes: 0,
+                                );
+                        
+
+                            _notifications.sendNotificationNow("Post Sent", "", "");
+                            final snackBar = SnackBar(
+                              content: Text("Pulse Sent!",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17
+                                ),
+                              ),
+                              backgroundColor: Colors.grey[900],
+                            );
+
+                            Scaffold.of(context).showSnackBar(snackBar);
+                          }
+                        },
+                      )
+                    ),
+                  ],
+                )
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          });
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      });
   }
+}
+
+Future<void> _updateUserSettings(BuildContext context) async {
+  final userSettingsModel = UserSettingsModel();
+  var userSettings = await Navigator.pushNamed(context, '/updateUserSettings');
+
+  UserSettings newUserSettings = userSettings;
+
+  newUserSettings.setID(1);
+
+  userSettingsModel.updateUserSettings(newUserSettings);
+
+  print("Update called: $newUserSettings");
+}
+
+Future<UserSettings> checkUserSettings() async {
+  final userSettingsModel = UserSettingsModel();
+  UserSettings userSettings;
+
+  var _temp = await userSettingsModel.getUserSettingsWithId(1);
+
+  if (_temp == null) {
+    userSettings = UserSettings(fontSize: 14, showImages: true, login: null);
+  } else {
+    userSettings = _temp;
+  }
+
+  userSettings.setID(1);
+
+  userSettingsModel.updateUserSettings(userSettings);
+
+  return userSettings;
 }

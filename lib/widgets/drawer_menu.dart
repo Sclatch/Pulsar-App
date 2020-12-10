@@ -15,7 +15,7 @@ Widget drawerMenu(BuildContext context) {
   NetworkImage background;
 
   return FutureBuilder(
-      future: checkUserSettings(context),
+      future: checkUserSettings(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           UserSettings userSettings = snapshot.data;
@@ -188,7 +188,7 @@ Future<void> _updateUserSettings(BuildContext context) async {
   print("Update called: $newUserSettings");
 }
 
-Future<UserSettings> checkUserSettings(BuildContext context) async {
+Future<UserSettings> checkUserSettings() async {
   final userSettingsModel = UserSettingsModel();
   UserSettings userSettings;
 

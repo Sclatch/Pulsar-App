@@ -241,7 +241,7 @@ Widget pulseCard(BuildContext context, Post post, User user) {
               borderRadius: BorderRadius.all(const Radius.circular(15))),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Image(image: NetworkImage(post.image), fit: BoxFit.fitWidth,),
+            child: Image(image: NetworkImage(post.image), fit: BoxFit.cover,),
           )
           //Image(image: AssetImage(post.image),),
         ),

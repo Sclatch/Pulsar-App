@@ -67,14 +67,40 @@ class _LoginPageState extends State<LoginPage> {
                   controller: passController,
                   obscureText: true,
                 ),
+                SizedBox(height: 25),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      ButtonTheme(
+                        height: 50,
+                        minWidth: 150,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.5),
+                          ),
+                          child: Text("Register", textScaleFactor: 1.4,),
+                          onPressed: () {},
+                        ),
+                      ),
+                      ButtonTheme(
+                        height: 50,
+                        minWidth: 150,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.5),
+                          ),
+                          child: Text("Login", textScaleFactor: 1.4,),
+                          onPressed: () {
+                            checkLogin(userController.text, passController.text);
+                          }
+                        ),
+                      ),
+                      
+                    ]
+                  )
+                )
               ])),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          checkLogin(userController.text, passController.text);
-        },
-        tooltip: 'Login',
-        child: Icon(Icons.input),
-      ),
     );
   }
 
@@ -98,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         print("LOGGED IN");
         updateUserSettings(user.username);
+        Future.delayed(Duration(milliseconds: 500)).then((value) => Navigator.pop(context));
       }
     }
   }

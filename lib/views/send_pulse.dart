@@ -28,6 +28,7 @@ class _SendPulseState extends State<SendPulse> {
   String username;
   User user;
   Color sendButtonColor = Colors.grey;
+  NetworkImage pfp;
 
   GeoPoint location;
   TextEditingController pulseTextController = TextEditingController();
@@ -100,6 +101,9 @@ class _SendPulseState extends State<SendPulse> {
                       user = User.fromMap(userDocument.data(),
                           reference: userDocument.reference);
                       username = user.username;
+                      if(user.image != null){
+                        pfp = NetworkImage(user.image);
+                      }
                     }
 
                     return Container(
@@ -110,7 +114,10 @@ class _SendPulseState extends State<SendPulse> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             CircleAvatar(
-                                radius: 40.0, backgroundColor: Colors.blueGrey),
+                                radius: 40.0,
+                                backgroundColor: Colors.blueGrey,
+                                backgroundImage: pfp,
+                              ),
                             SizedBox(height: 10),
                             Text("Send a Pulse", textScaleFactor: 1.5),
                             SizedBox(height: 15),

@@ -42,6 +42,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List posts = snapshot.data.docs;
+            posts = posts.reversed.toList();
 
             //This is how you access a specific comments in a post
 

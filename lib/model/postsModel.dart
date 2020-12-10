@@ -32,7 +32,8 @@ class PostsModel {
   }
 
   Future<QuerySnapshot> getAllPosts() async {
-    return await FirebaseFirestore.instance.collection('posts').orderBy('date', descending: true).get();
+                                                                        //can't order in descending order, we do that in main_feed.dart
+    return await FirebaseFirestore.instance.collection('posts').orderBy('date').get();
   }
 
   Stream<QuerySnapshot> streamAllPosts() {

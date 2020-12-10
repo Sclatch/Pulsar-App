@@ -33,6 +33,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
     final CommentsModel commentsModel = CommentsModel();
     final PostsModel postsModel = PostsModel();
     final UserModel usersModel = UserModel();
+    List<Post> newPostList = [];
 
     return FutureBuilder(
         //This is how you search for a user
@@ -70,7 +71,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                             int newPosts;
 
                             if (settings.login != null) {
-                              newPosts = posts.length - curUser.postsSeen;
+                              newPosts = posts.length - curUser.postsSeen - 1;
                             }
                             //posts = posts.reversed.toList();
 
@@ -94,11 +95,26 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                                     usersModel.updateUser(curUser);
                                   }
 
-                                  if (newPosts > 0) {
-                                    newPosts -= 1;
+                                  if (newPosts >= 0) {
                                     //This is where I will call the notification
                                     //it will be somethng like addNotification(post)
-                                    print("NEW POST FROM USER ${post.user}");
+
+                                    newPostList.add(post);
+
+                                    if (newPosts == 0) {
+                                      //print("NEW POST FROM USER ${post.user}");
+
+                                      newPostList =
+                                          newPostList.reversed.toList();
+                                      for (Post newPost in newPostList) {
+                                        print(
+                                            "NEW POST FROM USER ${newPost.user}");
+                                      }
+                                      print(
+                                          "THE FIRST NEW POST IS INDEX $index");
+                                    }
+
+                                    newPosts -= 1;
                                   }
                                 }
 

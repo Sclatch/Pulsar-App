@@ -54,7 +54,7 @@ class PostsModel {
         .collection('posts')
         .where('content', isGreaterThanOrEqualTo: term)
         //.where('content', isEqualTo: term)
-        .orderBy('date')
+        //.orderBy('date')
         .get();
   }
 
@@ -62,7 +62,7 @@ class PostsModel {
     return await FirebaseFirestore.instance
         .collection('posts')
         .where('user', isEqualTo: name)
-        .orderBy('date')
+        //.orderBy('date')
         .get();
   }
 }

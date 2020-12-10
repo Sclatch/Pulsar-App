@@ -59,7 +59,7 @@ class _PulseCardState extends State<PulseCard> {
                     Navigator.push(context, PageRouteBuilder(
                       opaque: false,
                       pageBuilder: (BuildContext context, _, __) {
-                        return Center(child: ProfilePage(title: 'Profile', user: user));
+                        return Center(child: ProfilePage(title: 'Profile', user: user, fromDrawer:false));
                       },
                       transitionsBuilder: (___, Animation<double> animation, ____, Widget child) {
                         return child;

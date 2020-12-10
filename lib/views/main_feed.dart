@@ -70,7 +70,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             List posts = snapshot.data.docs;
-
+                            
                             int newPosts;
 
                             if (settings.login != null) {

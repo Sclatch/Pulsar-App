@@ -144,7 +144,7 @@ List<Widget> _drawerButtons(BuildContext context, User user, bool loggedIn,
         splashColor: Colors.lightBlue,
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProfilePage(user: user)));
+              MaterialPageRoute(builder: (context) => ProfilePage(user: user, fromDrawer: true)));
         },
         child: Container(
             height: 60,

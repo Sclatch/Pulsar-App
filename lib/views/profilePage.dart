@@ -9,22 +9,24 @@ import 'package:Pulsar/model/postsModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key key, this.title, this.user}) : super(key: key);
+  ProfilePage({Key key, this.title, this.user, this.fromDrawer}) : super(key: key);
   final User user;
+  final bool fromDrawer;
   final String title;
 
   @override
-  _ProfilePageState createState() => _ProfilePageState(user: user);
+  _ProfilePageState createState() => _ProfilePageState(user: user, fromDrawer: fromDrawer);
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   final User user;
+  final bool fromDrawer;
   String username;
   String description;
   NetworkImage pfp;
   NetworkImage background;
 
-  _ProfilePageState({this.user}) {
+  _ProfilePageState({this.user, this.fromDrawer=false}) {
     if (user != null) {
       username = user.username;
       description = user.description;
@@ -107,10 +109,14 @@ class _ProfilePageState extends State<ProfilePage> {
               //height: MediaQuery.of(context).size.height * 0.60,
               child: FutureBuilder(
                   //This is how you search for a user
-                  future: postsModel.searchPost(username),
+                  future: postsModel.searchPostUser(username),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List posts = snapshot.data.docs;
+                      //this if statement ensures the posts are always displayed in the correct order
+                      if(!fromDrawer) {
+                        posts=posts.reversed.toList();
+                      }
                       return ListView.builder(
                           itemCount: posts.length,
                           itemBuilder: (BuildContext context, int index) {

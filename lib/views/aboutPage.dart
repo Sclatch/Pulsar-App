@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AboutPage extends StatelessWidget {
 
-  final String _aboutText =  "This app is made by 3 people: \n Hayden, Kevin, Nicolas. \n For CSCI4100 project blabalbalbalbalbalbalbal";
+  final String _aboutText =  "This app is made by 3 people: \n Hayden, Kevin, Nicolas. \n For CSCI4100 Final Project";
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class AboutPage extends StatelessWidget {
             Image.asset('lib/assets/ico.png',
             width: 100, height: 100,),
             SizedBox(height: 15),
-            Text("Pulsar - Your Social Media",
+            Text("Pulsar - Your Social Media App",
               style: TextStyle(
                 fontSize: 25
               ),

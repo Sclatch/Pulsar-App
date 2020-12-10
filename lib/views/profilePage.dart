@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            height: 150,
+            height: 175,
             decoration: BoxDecoration(
               color: Colors.lightBlue,
               image: DecorationImage(
@@ -82,27 +82,22 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SizedBox(height: 10),
           Text(username,
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 35)),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 35,
+                fontWeight: FontWeight.bold
+              )
+            ),
           Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              height: 100,
               child: Text(
                 description,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 17),
               )),
-          Container(
-            height: 25,
-            child: RaisedButton(
-              child: Text("Edit Profile"),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditUserPage(user: this.user)));
-              }
-            ),
-          ),
+          SizedBox(height: 5),
+          _editProfileButton(fromDrawer),
+          SizedBox(height: 15),
           Expanded(
               //padding: const EdgeInsets.symmetric(horizontal: 5),
               //width: MediaQuery.of(context).size.width,
@@ -140,5 +135,24 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
     );
+  }
+
+  Widget _editProfileButton(bool fromDrawer) {
+    if(fromDrawer) {
+      return Container(
+        height: 25,
+        child: RaisedButton(
+          child: Text("Edit Profile"),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EditUserPage(user: this.user)));
+          }
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 }

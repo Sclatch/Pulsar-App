@@ -203,12 +203,15 @@ Widget _replySection(User user, NetworkImage pfp, Post post) {
                     hintText: "Write a reply",
                     isDense: true),
                 onSubmitted: (value) {
-                  Comment comment = Comment(
-                    text: value,
-                    user: user.username,
-                  );
-                  addComment(comment, post);
-                  _controller.clear();
+
+                  if(value != null && value != ""){
+                    Comment comment = Comment(
+                      text: value,
+                      user: user.username,
+                    );
+                    addComment(comment, post);
+                    _controller.clear();
+                  }
                 },
                 onChanged: (value) {
                   textComment = value;
@@ -221,13 +224,17 @@ Widget _replySection(User user, NetworkImage pfp, Post post) {
                     icon: Icon(Icons.send),
                     splashRadius: 20,
                     onPressed: () {
-                      Comment comment = Comment(
+                      if(textComment != null && textComment == "") {
+                        Comment comment = Comment(
                         text: textComment,
                         user: user.username
                       );
                       addComment(comment, post);
                       _controller.clear();
-                    }))
+                      }
+                    }
+                  )
+                )
           ],
         ));
   } else {

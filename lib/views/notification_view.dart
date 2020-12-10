@@ -41,10 +41,12 @@ class NotificationPage extends StatelessWidget {
                   child: GestureDetector(
                     child: ListTile(
                         //AVATAR
-                        leading: CircleAvatar(
-                          radius: 35.0,
-                          backgroundColor: Colors.blueGrey,
-                          backgroundImage: NetworkImage(user.image),
+                        leading: Container(
+                          child: CircleAvatar(
+                            radius: 20,
+                            backgroundColor: Colors.blueGrey,
+                            backgroundImage: NetworkImage(user.image),
+                          ),
                         ),
                         //MORE OPTIONS
                         trailing: Material(

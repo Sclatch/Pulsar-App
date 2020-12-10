@@ -172,6 +172,8 @@ class _CommentPageState extends State<CommentPage> {
 }
 
 Widget _replySection(User user, NetworkImage pfp, Post post) {
+  String textComment;
+  var _controller = TextEditingController();
   if (user != null) {
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -189,6 +191,7 @@ Widget _replySection(User user, NetworkImage pfp, Post post) {
             Flexible(
               flex: 8,
               child: TextField(
+                controller: _controller,
                 style: TextStyle(
                   fontSize: 18,
                 ),
@@ -200,19 +203,31 @@ Widget _replySection(User user, NetworkImage pfp, Post post) {
                     hintText: "Write a reply",
                     isDense: true),
                 onSubmitted: (value) {
-                  print("value");
                   Comment comment = Comment(
                     text: value,
                     user: user.username,
                   );
                   addComment(comment, post);
+                  _controller.clear();
+                },
+                onChanged: (value) {
+                  textComment = value;
                 },
               ),
             ),
             Flexible(
                 flex: 1,
                 child: IconButton(
-                    icon: Icon(Icons.send), splashRadius: 20, onPressed: () {}))
+                    icon: Icon(Icons.send),
+                    splashRadius: 20,
+                    onPressed: () {
+                      Comment comment = Comment(
+                        text: textComment,
+                        user: user.username
+                      );
+                      addComment(comment, post);
+                      _controller.clear();
+                    }))
           ],
         ));
   } else {

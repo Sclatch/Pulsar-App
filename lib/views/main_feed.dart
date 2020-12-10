@@ -10,6 +10,7 @@ import '../model/comments.dart';
 import '../model/commentsModel.dart';
 import '../model/users.dart';
 import '../model/usersModel.dart';
+import '../model/userNotification.dart';
 
 import '../widgets/pulse.dart';
 
@@ -27,6 +28,8 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final UserNotificationListBLoC userNotificationListBLoC =
+        Provider.of<UserNotificationListBLoC>(context);
     final UserSettingsModel userSettingsModel =
         context.watch<UserSettingsModel>();
 
@@ -52,6 +55,7 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                     User curUser;
 
                     if (snapshot.data.docs.isEmpty) {
+                      print("THE SHIT IS EMPTY MY GUY");
                       curUser = null;
                     } else {
                       DocumentSnapshot userDocument = snapshot.data.docs[0];
@@ -104,11 +108,18 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                                     if (newPosts == 0) {
                                       //print("NEW POST FROM USER ${post.user}");
 
-                                      newPostList =
-                                          newPostList.reversed.toList();
+                                      //newPostList = newPostList.reversed.toList();
                                       for (Post newPost in newPostList) {
-                                        print(
-                                            "NEW POST FROM USER ${newPost.user}");
+                                        //print("NEW POST FROM USER ${newPost.user}");
+
+                                        if (newPost.user != curUser.username) {
+                                          UserNotification newUserNotification =
+                                              UserNotification(post: newPost);
+
+                                          userNotificationListBLoC
+                                              .addUserNotification(
+                                                  newUserNotification);
+                                        }
                                       }
                                       print(
                                           "THE FIRST NEW POST IS INDEX $index");
@@ -192,24 +203,6 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
   Future<UserSettings> checkUserSettings() async {
     final userSettingsModel = UserSettingsModel();
 
-    UserSettings userSettings;
-
-    var _temp = await userSettingsModel.getUserSettingsWithId(1);
-
-    if (_temp == null) {
-      userSettings = UserSettings(
-        fontSize: 14,
-        showImages: true,
-        login: null,
-      );
-
-      userSettings.setID(1);
-
-      userSettingsModel.updateUserSettings(userSettings);
-    } else {
-      userSettings = _temp;
-    }
-
-    return userSettings;
+    return await userSettingsModel.getUserSettingsWithId(1);
   }
 }

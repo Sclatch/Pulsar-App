@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'model/userSettingsModel.dart';
+import 'model/userNotification.dart';
 
 import 'views/updateSettings.dart';
 import 'views/main_feed.dart';
@@ -19,7 +20,10 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserSettingsModel()),
+        ChangeNotifierProvider(create: (_) => UserNotificationListBLoC()),
+        ChangeNotifierProvider(
+          create: (_) => UserSettingsModel(),
+        )
       ],
       child: MyApp(),
     ),
@@ -77,6 +81,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
+
   void state() {
     setState(() {});
   }

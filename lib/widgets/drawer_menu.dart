@@ -85,11 +85,23 @@ Future<void> _updateUserSettings(BuildContext context) async {
 Future<UserSettings> checkUserSettings() async {
   final userSettingsModel = UserSettingsModel();
 
-  UserSettings userSettings = await userSettingsModel.getUserSettingsWithId(1);
+  UserSettings userSettings;
 
-  userSettings.setID(1);
+  var _temp = await userSettingsModel.getUserSettingsWithId(1);
 
-  userSettingsModel.updateUserSettings(userSettings);
+  if (_temp == null) {
+    userSettings = UserSettings(
+      fontSize: 14,
+      showImages: true,
+      login: null,
+    );
+
+    userSettings.setID(1);
+
+    userSettingsModel.updateUserSettings(userSettings);
+  } else {
+    userSettings = _temp;
+  }
 
   return userSettings;
 }

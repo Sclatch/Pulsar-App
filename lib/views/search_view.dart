@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/pulse.dart';
 import '../model/postsModel.dart';
 import '../model/posts.dart';
-//import '../model/commentsModel.dart';
+import '../model/usersModel.dart';
 import '../model/users.dart';
 
 class SearchView extends StatefulWidget {
@@ -20,11 +20,11 @@ class _SearchViewState extends State<SearchView> {
   //String searchTerm = 'Reposting';
   //TextEditingController searchController = TextEditingController(text: "Reposting");
 
-
   @override
   Widget build(BuildContext context) {
     //TextEditingController searchController;
     final PostsModel postsModel = PostsModel();
+    final UserModel usersModel = UserModel();
     String searchTerm;
 
     return Container(
@@ -37,8 +37,8 @@ class _SearchViewState extends State<SearchView> {
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius:
-                  const BorderRadius.all(const Radius.circular(25.0))),
+                  borderRadius:
+                      const BorderRadius.all(const Radius.circular(25.0))),
               isDense: true,
               hintText: "Search Keyword",
             ),
@@ -47,54 +47,62 @@ class _SearchViewState extends State<SearchView> {
             onChanged: (text) {
               setState(() {
                 //searchTerm=searchController.text;
-                searchTerm=text;
+                searchTerm = text;
                 print(searchTerm);
               });
             },
           ),
-          
         ),
         //LISTVIEW OF THE RETURNED RESULT
         Expanded(
-          //padding: const EdgeInsets.symmetric(horizontal: 10),
-          //width: MediaQuery.of(context).size.width,
-          //height: MediaQuery.of(context).size.height * 0.68,
-          child: FutureBuilder(
-              //This is how you search for a post
-              future: postsModel.searchPost(searchTerm),
-              builder: (context, snapshot) {
-                print("Rebuilding Search");
+            //padding: const EdgeInsets.symmetric(horizontal: 10),
+            //width: MediaQuery.of(context).size.width,
+            //height: MediaQuery.of(context).size.height * 0.68,
+            child: FutureBuilder(
+                //This is how you search for a post
+                future: postsModel.searchPost(searchTerm),
+                builder: (context, snapshot) {
+                  print("Rebuilding Search");
 
-                if (snapshot.hasData) {
-                  List posts = snapshot.data.docs;
-                  
-                  return ListView.builder(
-                    itemCount: posts.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      //This is just to show the indexed post
-                      DocumentSnapshot postDocument = posts[index];
+                  if (snapshot.hasData) {
+                    List posts = snapshot.data.docs;
 
-                      //This takes a post from the database and makes it an instance of post
-                      final post = Post.fromMap(postDocument.data(),
-                          reference: postDocument.reference);
+                    return ListView.builder(
+                        itemCount: posts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          //This is just to show the indexed post
+                          DocumentSnapshot postDocument = posts[index];
 
-                      //need to change this to pull the proper User data
-                      final user = User.fromMap(postDocument.data(),
-                          reference: postDocument.reference);
+                          //This takes a post from the database and makes it an instance of post
+                          Post post = Post.fromMap(postDocument.data(),
+                              reference: postDocument.reference);
 
-                      print(post.user);
+                          return FutureBuilder(
+                              //This is how you search for a post
+                              future: usersModel.searchUser(post.user),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  List users = snapshot.data.docs;
 
-                      return PulseCard(post: post, user: user);
-                    }
-                  );
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              }
-            )
-          )
+                                  DocumentSnapshot userDocument = users[0];
+
+                                  User user = User.fromMap(userDocument.data(),
+                                      reference: postDocument.reference);
+
+                                  return PulseCard(post: post, user: user);
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              });
+                        });
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                }))
       ]),
     );
   }

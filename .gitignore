@@ -9,6 +9,7 @@
 .buildlog/
 .history
 .svn/
+lib/model/Repl.it - Python Online Compiler, IDE, Editor, Interpreter and REPL_files/
 
 # IntelliJ related
 *.iml

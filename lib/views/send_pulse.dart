@@ -198,6 +198,8 @@ class _SendPulseState extends State<SendPulse> {
                                         dislikes: 0,
                                       ),
                                     );
+                                    pulseTextController.text="";
+                                    pulseImageURLController.text="";
                                     _notifications.sendNotificationNow(
                                         "Post Sent", "", "");
                                     final snackBar = SnackBar(

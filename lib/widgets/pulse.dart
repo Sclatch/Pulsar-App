@@ -31,8 +31,7 @@ class _PulseCardState extends State<PulseCard> {
   Widget build(BuildContext context) {
   PostsModel model = new PostsModel();
   NetworkImage pfp;
-
-  final DateTime time = post.toDate();
+  DateTime time = post.toDate();
 
   if(user.image != null) {
     pfp = NetworkImage(user.image);
@@ -146,7 +145,7 @@ class _PulseCardState extends State<PulseCard> {
                           )
                         ),
 
-                        //DELETE BUTTON
+                        /*//DELETE BUTTON
                         PopupMenuItem(
                           value: "delete",
                           child: Container(
@@ -158,7 +157,7 @@ class _PulseCardState extends State<PulseCard> {
                               ],
                             ),
                           )
-                        ),
+                        ),*/
                         
                         //JUST INCASE WE NEED SOMETHING MORE
                       ],

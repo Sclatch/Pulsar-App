@@ -55,7 +55,6 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                     User curUser;
 
                     if (snapshot.data.docs.isEmpty) {
-                      print("THE SHIT IS EMPTY MY GUY");
                       curUser = null;
                     } else {
                       DocumentSnapshot userDocument = snapshot.data.docs[0];

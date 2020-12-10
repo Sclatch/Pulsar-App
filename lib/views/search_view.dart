@@ -17,6 +17,7 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
+  String searchTerm = "";
   //String searchTerm = 'Reposting';
   //TextEditingController searchController = TextEditingController(text: "Reposting");
 
@@ -25,7 +26,6 @@ class _SearchViewState extends State<SearchView> {
     //TextEditingController searchController;
     final PostsModel postsModel = PostsModel();
     final UserModel usersModel = UserModel();
-    String searchTerm;
 
     return Container(
       child: Column(children: <Widget>[
@@ -60,7 +60,7 @@ class _SearchViewState extends State<SearchView> {
             //height: MediaQuery.of(context).size.height * 0.68,
             child: FutureBuilder(
                 //This is how you search for a post
-                future: postsModel.searchPost(searchTerm),
+                future: postsModel.getAllPosts(),
                 builder: (context, snapshot) {
                   print("Rebuilding Search");
 
@@ -74,13 +74,15 @@ class _SearchViewState extends State<SearchView> {
                           DocumentSnapshot postDocument = posts[index];
 
                           //This takes a post from the database and makes it an instance of post
-                          Post post = Post.fromMap(postDocument.data(),
-                              reference: postDocument.reference);
-
-                          return FutureBuilder(
+                          Post post = Post.fromMap(postDocument.data(), reference: postDocument.reference);
+                          
+                          //If there is no search-term, display all posts
+                          if(searchTerm=="" || searchTerm==null) {
+                            return FutureBuilder(
                               //This is how you search for a post
                               future: usersModel.searchUser(post.user),
                               builder: (context, snapshot) {
+                                print("Building All");
                                 if (snapshot.hasData) {
                                   List users = snapshot.data.docs;
 
@@ -95,7 +97,41 @@ class _SearchViewState extends State<SearchView> {
                                     child: CircularProgressIndicator(),
                                   );
                                 }
-                              });
+                              }
+                            );
+                          }
+                          //if there /is/ a search-term...
+                          else {
+                            return FutureBuilder(
+                              //This is how you search for a post
+                              future: usersModel.searchUser(post.user),
+                              builder: (context, snapshot) {
+                                print("Building based on Search Term");
+                                if (snapshot.hasData) {
+                                  List users = snapshot.data.docs;
+
+                                  DocumentSnapshot userDocument = users[0];
+
+                                  User user = User.fromMap(userDocument.data(),
+                                      reference: postDocument.reference);
+                                  //... and the post contains a match to the search term
+                                  if(post.content.contains(searchTerm) || post.user.contains(searchTerm)) {
+                                    return PulseCard(post: post, user: user);
+                                  }
+                                  //.. or does not match
+                                  else {
+                                    return Container(
+                                      color: Colors.transparent,
+                                    );
+                                  }
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              }
+                            );
+                          }
                         });
                   } else {
                     return Center(

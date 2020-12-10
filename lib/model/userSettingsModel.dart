@@ -20,7 +20,6 @@ class UserSettingsModel with ChangeNotifier {
         fontSize: 14,
         showImages: true,
         login: null,
-        postCount: 0,
       );
       insertUserSettings(userSettings);
     }

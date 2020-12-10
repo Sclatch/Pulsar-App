@@ -43,64 +43,89 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
 
             print(settings);
 
-            //Users, Posts, and Comments all work in either of the following ways
-            //This is how you access the posts and update as they update
-            return StreamBuilder(
-                stream: postsModel.streamAllPosts(),
+            return FutureBuilder(
+                //This is how you search for a user
+                future: usersModel.searchUser(settings.login),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    List posts = snapshot.data.docs;
+                    User curUser;
 
-                    int newPosts = posts.length - settings.postCount;
+                    if (snapshot.data.docs.isEmpty) {
+                      curUser = null;
+                    } else {
+                      DocumentSnapshot userDocument = snapshot.data.docs[0];
 
-                    //posts = posts.reversed.toList();
+                      curUser = User.fromMap(userDocument.data(),
+                          reference: userDocument.reference);
+                    }
 
-                    //This is how you access a specific comments in a post
+                    //Users, Posts, and Comments all work in either of the following ways
+                    //This is how you access the posts and update as they update
+                    return StreamBuilder(
+                        stream: postsModel.streamAllPosts(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List posts = snapshot.data.docs;
 
-                    return ListView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      itemCount: posts.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        //This is just to show the first instance of the posts
-                        DocumentSnapshot postDocument = posts[index];
+                            int newPosts;
 
-                        //This takes a post from the database and makes it an instance of post
+                            if (settings.login != null) {
+                              newPosts = posts.length - curUser.postsSeen;
+                            }
+                            //posts = posts.reversed.toList();
 
-                        Post post = Post.fromMap(postDocument.data(),
-                            reference: postDocument.reference);
+                            //This is how you access a specific comments in a post
 
-                        if (posts.length > settings.postCount) {
-                          settings.postCount = posts.length;
-                          updateUserSettings(posts.length);
-                        }
+                            return ListView.builder(
+                              padding: const EdgeInsets.all(8.0),
+                              itemCount: posts.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                //This is just to show the first instance of the posts
+                                DocumentSnapshot postDocument = posts[index];
 
-                        if (newPosts > 0) {
-                          newPosts -= 1;
-                          //This is where I will call the notification
-                          print("NEW POST FROM USER ${post.user}");
-                        }
+                                //This takes a post from the database and makes it an instance of post
 
-                        return FutureBuilder(
-                            //This is how you search for a user
-                            future: usersModel.searchUser(post.user),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                List users = snapshot.data.docs;
+                                Post post = Post.fromMap(postDocument.data(),
+                                    reference: postDocument.reference);
 
-                                DocumentSnapshot userDocument = users[0];
+                                if (settings.login != null) {
+                                  if (posts.length > curUser.postsSeen) {
+                                    curUser.postsSeen = posts.length;
+                                    usersModel.updateUser(curUser);
+                                  }
 
-                                final user = User.fromMap(userDocument.data(),
-                                    reference: userDocument.reference);
+                                  if (newPosts > 0) {
+                                    newPosts -= 1;
+                                    //This is where I will call the notification
+                                    //it will be somethng like addNotification(post)
+                                    print("NEW POST FROM USER ${post.user}");
+                                  }
+                                }
 
-                                return PulseCard(post: post, user: user);
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            });
+                                return FutureBuilder(
+                                    //This is how you search for a user
+                                    future: usersModel.searchUser(post.user),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        List users = snapshot.data.docs;
 
-                        /*return StreamBuilder(
+                                        DocumentSnapshot userDocument =
+                                            users[0];
+
+                                        final user = User.fromMap(
+                                            userDocument.data(),
+                                            reference: userDocument.reference);
+
+                                        return PulseCard(
+                                            post: post, user: user);
+                                      } else {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    });
+
+                                /*return StreamBuilder(
                     stream: commentsModel.streamAllComments(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -126,8 +151,14 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
                         );
                       }
                     });*/
-                      },
-                    );
+                              },
+                            );
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        });
                   } else {
                     return Center(
                       child: CircularProgressIndicator(),
@@ -154,7 +185,6 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
         fontSize: 14,
         showImages: true,
         login: null,
-        postCount: 0,
       );
 
       userSettings.setID(1);
@@ -165,16 +195,5 @@ class _MainFeedWidgetState extends State<MainFeedWidget> {
     }
 
     return userSettings;
-  }
-
-  Future<void> updateUserSettings(int postCount) async {
-    final model = UserSettingsModel();
-    UserSettings userSettings = await model.getUserSettingsWithId(1);
-
-    userSettings.postCount = postCount;
-
-    userSettings.setID(1);
-
-    model.updateUserSettings(userSettings);
   }
 }

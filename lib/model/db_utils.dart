@@ -7,7 +7,7 @@ class DBUtils {
       path.join(await getDatabasesPath(), 'settings.db'),
       onCreate: (db, version) {
         db.execute(
-            'CREATE TABLE user_settings(id INTEGER PRIMARY KEY, fontSize INTEGER, showImages INTEGER, login TEXT, postCount INTEGER)');
+            'CREATE TABLE user_settings(id INTEGER PRIMARY KEY, fontSize INTEGER, showImages INTEGER, login TEXT)');
       },
       version: 1,
     );

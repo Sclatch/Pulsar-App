@@ -19,8 +19,10 @@ class NotificationPage extends StatelessWidget {
 
     final UserModel usersModel = UserModel();
 
-    return ListView.builder(
+    return ListView.separated(
       itemCount: userNotificationListBLoC.userNotifications.length,
+      separatorBuilder: (BuildContext context, int index) =>
+          Divider(height: 10),
       itemBuilder: (BuildContext context, int index) {
         Post post = userNotificationListBLoC.userNotifications[index].post;
 
@@ -80,15 +82,6 @@ class NotificationPage extends StatelessWidget {
               }
             });
       },
-    );
-
-    return Container(
-      child: ListView.separated(
-        itemCount: 6,
-        separatorBuilder: (BuildContext context, int index) =>
-            Divider(height: 10),
-        itemBuilder: (BuildContext context, int index) {},
-      ),
     );
   }
 }

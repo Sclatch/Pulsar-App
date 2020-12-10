@@ -77,6 +77,9 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
+  void state() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +99,7 @@ class _MainPageState extends State<MainPage> {
               width: 150, height: 150),
         ),
       ),
-      drawer: drawerMenu(context),
+      drawer: drawerMenu(context, state),
       body: options[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,

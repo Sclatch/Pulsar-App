@@ -124,6 +124,7 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
             fontSize: userSettings.fontSize.round(),
             showImages: userSettings.showImages,
             login: userSettings.login,
+            language: userSettings.language,
           );
           Navigator.of(context).pop(updatedUserSettings);
         },

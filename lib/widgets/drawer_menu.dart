@@ -94,6 +94,7 @@ Future<UserSettings> checkUserSettings() async {
       fontSize: 14,
       showImages: true,
       login: null,
+      language: "English",
     );
 
     userSettings.setID(1);
@@ -143,8 +144,11 @@ List<Widget> _drawerButtons(BuildContext context, User user, bool loggedIn,
       FlatButton(
         splashColor: Colors.lightBlue,
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProfilePage(user: user, fromDrawer: true)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ProfilePage(user: user, fromDrawer: true)));
         },
         child: Container(
             height: 60,

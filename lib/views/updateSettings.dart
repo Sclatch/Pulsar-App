@@ -109,6 +109,22 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
                         ),
                       ],
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15, top: 15),
+                            child: Text(
+                              "Language:",
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 );
               } else {

@@ -3,11 +3,12 @@ import 'package:Pulsar/views/aboutPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../views/profilePage.dart';
-import '../views/loginPage.dart';
 import '../model/userSettings.dart';
 import '../model/userSettingsModel.dart';
 import '../model/users.dart';
+
+import '../views/profilePage.dart';
+import '../views/loginPage.dart';
 
 Widget drawerMenu(BuildContext context, Function state) {
   final UserModel usersModel = UserModel();
@@ -49,12 +50,21 @@ Widget drawerMenu(BuildContext context, Function state) {
                   }
 
                   return Drawer(
-                      child: Container(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: _drawerButtons(context, user, loggedIn,
-                                  pfp, background, state))));
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: _drawerButtons(
+                          context,
+                          user,
+                          loggedIn,
+                          pfp,
+                          background,
+                          state,
+                        ),
+                      ),
+                    ),
+                  );
                 } else {
                   return Center(
                     child: CircularProgressIndicator(),
@@ -151,15 +161,18 @@ List<Widget> _drawerButtons(BuildContext context, User user, bool loggedIn,
                       ProfilePage(user: user, fromDrawer: true)));
         },
         child: Container(
-            height: 60,
-            child: Row(children: <Widget>[
+          height: 60,
+          child: Row(
+            children: <Widget>[
               Icon(Icons.person, size: 30.0),
               SizedBox(width: 15.0),
               Text(
                 "Profile",
                 textScaleFactor: 1.30,
               )
-            ])),
+            ],
+          ),
+        ),
       ),
     );
     buttons.add(
@@ -170,15 +183,18 @@ List<Widget> _drawerButtons(BuildContext context, User user, bool loggedIn,
         _logoutFunction(context, state);
       },
       child: Container(
-          height: 60,
-          child: Row(children: <Widget>[
+        height: 60,
+        child: Row(
+          children: <Widget>[
             Icon(Icons.settings_power, size: 30.0),
             SizedBox(width: 15.0),
             Text(
               "Log Out",
               textScaleFactor: 1.30,
             )
-          ])),
+          ],
+        ),
+      ),
     ));
   } else {
     buttons.add(
@@ -189,15 +205,15 @@ List<Widget> _drawerButtons(BuildContext context, User user, bool loggedIn,
           _loginFunction(context, state);
         },
         child: Container(
-            height: 60,
-            child: Row(children: <Widget>[
+          height: 60,
+          child: Row(
+            children: <Widget>[
               Icon(Icons.input, size: 30.0),
               SizedBox(width: 15.0),
-              Text(
-                "Login",
-                textScaleFactor: 1.30,
-              )
-            ])),
+              Text("Login", textScaleFactor: 1.30)
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -210,15 +226,15 @@ List<Widget> _drawerButtons(BuildContext context, User user, bool loggedIn,
         _updateUserSettings(context);
       },
       child: Container(
-          height: 60,
-          child: Row(children: <Widget>[
+        height: 60,
+        child: Row(
+          children: <Widget>[
             Icon(Icons.settings, size: 30.0),
             SizedBox(width: 15.0),
-            Text(
-              "Settings",
-              textScaleFactor: 1.30,
-            )
-          ])),
+            Text("Settings", textScaleFactor: 1.30)
+          ],
+        ),
+      ),
     ),
   );
   buttons.add(
@@ -230,15 +246,15 @@ List<Widget> _drawerButtons(BuildContext context, User user, bool loggedIn,
             context, MaterialPageRoute(builder: (context) => AboutPage()));
       },
       child: Container(
-          height: 60,
-          child: Row(children: <Widget>[
+        height: 60,
+        child: Row(
+          children: <Widget>[
             Icon(Icons.error, size: 30.0),
             SizedBox(width: 15.0),
-            Text(
-              "About",
-              textScaleFactor: 1.30,
-            )
-          ])),
+            Text("About", textScaleFactor: 1.30)
+          ],
+        ),
+      ),
     ),
   );
 
@@ -266,11 +282,12 @@ void _logoutFunction(BuildContext context, Function state) async {
                     flex: 1,
                     child: Icon(Icons.sentiment_very_dissatisfied, size: 40)),
                 Flexible(
-                    flex: 3,
-                    child: Text(
-                      "Once you log out, you have to log-in back again. There will be less star in space",
-                      textScaleFactor: 1.1,
-                    ))
+                  flex: 3,
+                  child: Text(
+                    "Once you log out, you have to log-in back again. There will be less star in space",
+                    textScaleFactor: 1.1,
+                  ),
+                )
               ],
             ),
           ),
@@ -286,7 +303,7 @@ void _logoutFunction(BuildContext context, Function state) async {
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
-                child: Text("Confirm"))
+                child: Text("Confirm")),
           ],
         );
       });

@@ -10,8 +10,6 @@ import 'views/main_feed.dart';
 import 'views/search_view.dart';
 import 'views/send_pulse.dart';
 import 'views/notification_view.dart';
-//import 'views/profilePage.dart';
-//import 'views/messagePage.dart';
 
 import 'widgets/drawer_menu.dart';
 import 'widgets/bottomNavigation.dart';
@@ -59,8 +57,6 @@ class MyApp extends StatelessWidget {
                     UpdateUserSettingsWidget(title: 'Update User Settings'),
                 '/mainFeed': (BuildContext context) =>
                     MainFeedWidget(title: 'Main Feed'),
-                //'/profilePage': (BuildContext context) =>
-                //    ProfilePage(title: 'Profile'),
               },
             );
           } else {
@@ -93,15 +89,17 @@ class _MainPageState extends State<MainPage> {
       SearchView(),
       SendPulse(),
       NotificationPage(),
-      //MessagePage()
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: Center(
           widthFactor: 2,
-          child: Image.asset('lib/assets/scaffoldText.png',
-              width: 150, height: 150),
+          child: Image.asset(
+            'lib/assets/scaffoldText.png',
+            width: 150,
+            height: 150,
+          ),
         ),
       ),
       drawer: drawerMenu(context, state),

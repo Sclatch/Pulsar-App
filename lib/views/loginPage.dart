@@ -6,7 +6,7 @@ import '../model/usersModel.dart';
 import '../model/userSettings.dart';
 import '../model/userSettingsModel.dart';
 
-import 'registerPage.dart';
+import '../views/registerPage.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -28,90 +28,98 @@ class _LoginPageState extends State<LoginPage> {
         title: Text("Login"),
       ),
       body: Container(
-          padding: const EdgeInsets.all(25),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                    child: Image.asset(
-                  'lib/assets/scaffoldText.png',
-                  width: 300,
-                )),
-                SizedBox(height: 25),
-                TextField(
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                  decoration: new InputDecoration(
-                    border: new OutlineInputBorder(
-                        borderSide: BorderSide(width: 0.75),
-                        borderRadius:
-                            const BorderRadius.all(const Radius.circular(10))),
-                    icon: Icon(Icons.account_circle, size: 30),
-                    hintText: "Username",
-                    isDense: true,
-                  ),
-                  controller: userController,
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              child: Image.asset(
+                'lib/assets/scaffoldText.png',
+                width: 300,
+              ),
+            ),
+            SizedBox(height: 25),
+            TextField(
+              style: TextStyle(
+                fontSize: 18,
+              ),
+              decoration: new InputDecoration(
+                border: new OutlineInputBorder(
+                  borderSide: BorderSide(width: 0.75),
+                  borderRadius:
+                      const BorderRadius.all(const Radius.circular(10)),
                 ),
-                SizedBox(height: 10),
-                TextField(
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                  decoration: new InputDecoration(
-                    border: new OutlineInputBorder(
-                        borderSide: BorderSide(width: 0.75),
-                        borderRadius:
-                            const BorderRadius.all(const Radius.circular(10))),
-                    icon: Icon(Icons.lock, size: 30),
-                    hintText: "Password",
-                    isDense: true,
-                  ),
-                  controller: passController,
-                  obscureText: true,
+                icon: Icon(Icons.account_circle, size: 30),
+                hintText: "Username",
+                isDense: true,
+              ),
+              controller: userController,
+            ),
+            SizedBox(height: 10),
+            TextField(
+              style: TextStyle(
+                fontSize: 18,
+              ),
+              decoration: new InputDecoration(
+                border: new OutlineInputBorder(
+                  borderSide: BorderSide(width: 0.75),
+                  borderRadius:
+                      const BorderRadius.all(const Radius.circular(10)),
                 ),
-                SizedBox(height: 25),
-                Container(
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                      ButtonTheme(
-                        height: 50,
-                        minWidth: 150,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.5),
+                icon: Icon(Icons.lock, size: 30),
+                hintText: "Password",
+                isDense: true,
+              ),
+              controller: passController,
+              obscureText: true,
+            ),
+            SizedBox(height: 25),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ButtonTheme(
+                    height: 50,
+                    minWidth: 150,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.5),
+                      ),
+                      child: Text(
+                        "Register",
+                        textScaleFactor: 1.4,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RegisterPage(),
                           ),
-                          child: Text(
-                            "Register",
-                            textScaleFactor: 1.4,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RegisterPage()));
-                          },
+                        );
+                      },
+                    ),
+                  ),
+                  ButtonTheme(
+                    height: 50,
+                    minWidth: 150,
+                    child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.5),
                         ),
-                      ),
-                      ButtonTheme(
-                        height: 50,
-                        minWidth: 150,
-                        child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.5),
-                            ),
-                            child: Text(
-                              "Login",
-                              textScaleFactor: 1.4,
-                            ),
-                            onPressed: () {
-                              checkLogin(
-                                  userController.text, passController.text);
-                            }),
-                      ),
-                    ]))
-              ])),
+                        child: Text(
+                          "Login",
+                          textScaleFactor: 1.4,
+                        ),
+                        onPressed: () {
+                          checkLogin(userController.text, passController.text);
+                        }),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -127,8 +135,10 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       DocumentSnapshot userDocument = users[0];
 
-      User user =
-          User.fromMap(userDocument.data(), reference: userDocument.reference);
+      User user = User.fromMap(
+        userDocument.data(),
+        reference: userDocument.reference,
+      );
 
       if (user.password != pass) {
         print("INCORRECT PASSWORD");

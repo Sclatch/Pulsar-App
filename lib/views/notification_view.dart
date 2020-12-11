@@ -33,48 +33,46 @@ class NotificationPage extends StatelessWidget {
               if (snapshot.hasData) {
                 DocumentSnapshot userDocument = snapshot.data.docs[0];
 
-                User user = User.fromMap(userDocument.data(),
-                    reference: userDocument.reference);
+                User user = User.fromMap(
+                  userDocument.data(),
+                  reference: userDocument.reference,
+                );
 
                 return Container(
                   color: Colors.grey[900],
                   child: GestureDetector(
                     child: ListTile(
-                        //AVATAR
-                        leading: Container(
-                          child: CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.blueGrey,
-                            backgroundImage: NetworkImage(user.image),
-                          ),
+                      //AVATAR
+                      leading: Container(
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.blueGrey,
+                          backgroundImage: NetworkImage(user.image),
                         ),
-                        //MORE OPTIONS
-                        trailing: Material(
-                            color: Colors
-                                .transparent, //DO NOT REMOVE THIS. OTHERWISE THE SPLASH WONT SHOW
-                            child: IconButton(
-                                icon: Icon(
-                                  Icons.visibility_off,
-                                  size: 20,
-                                ),
-                                splashRadius: 15,
-                                onPressed: () {
-                                  //ADD DELETE FUNCTION HERE
+                      ),
+                      //MORE OPTIONS
+                      trailing: Material(
+                        color: Colors
+                            .transparent, //DO NOT REMOVE THIS. OTHERWISE THE SPLASH WONT SHOW
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.visibility_off,
+                              size: 20,
+                            ),
+                            splashRadius: 15,
+                            onPressed: () {
+                              userNotificationListBLoC.deleteUserNotification(
                                   userNotificationListBLoC
-                                      .deleteUserNotification(
-                                          userNotificationListBLoC
-                                              .userNotifications[index]);
-                                })),
-                        //TEXTS
-                        title: Text(
-                          post.user,
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        subtitle: Text(post.content)),
-                    onTap: () {
-                      print("Expand which pulse");
-                      //EXPAND FUNCTION HERE
-                    },
+                                      .userNotifications[index]);
+                            }),
+                      ),
+                      //TEXTS
+                      title: Text(
+                        post.user,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      subtitle: Text(post.content),
+                    ),
                   ),
                 );
               } else {

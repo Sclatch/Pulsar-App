@@ -1,9 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'db_utils.dart';
-import 'userSettings.dart';
+import '../model/db_utils.dart';
+import '../model/userSettings.dart';
 
 class UserSettingsModel with ChangeNotifier {
   static Database _database;

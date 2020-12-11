@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../widgets/pulse.dart';
+
 import '../model/postsModel.dart';
 import '../model/posts.dart';
 import '../model/usersModel.dart';
@@ -18,46 +19,37 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   String searchTerm = "";
-  //String searchTerm = 'Reposting';
-  //TextEditingController searchController = TextEditingController(text: "Reposting");
-
   @override
   Widget build(BuildContext context) {
-    //TextEditingController searchController;
     final PostsModel postsModel = PostsModel();
     final UserModel usersModel = UserModel();
 
     return Container(
-      child: Column(children: <Widget>[
-        //SEARCH BAR
-        Container(
-          padding: const EdgeInsets.all(15),
-          child: TextField(
-            //controller: searchController,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
-                  borderRadius:
-                      const BorderRadius.all(const Radius.circular(25.0))),
-              isDense: true,
-              hintText: "Search Keyword",
+      child: Column(
+        children: <Widget>[
+          //SEARCH BAR
+          Container(
+            padding: const EdgeInsets.all(15),
+            child: TextField(
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                    borderRadius:
+                        const BorderRadius.all(const Radius.circular(25.0))),
+                isDense: true,
+                hintText: "Search Keyword",
+              ),
+              style: TextStyle(fontSize: 20.0),
+              onChanged: (text) {
+                setState(() {
+                  searchTerm = text;
+                  print(searchTerm);
+                });
+              },
             ),
-            style: TextStyle(fontSize: 20.0),
-            //PLEASE ADD THE FUNCTION TO RETURN THE VALUE
-            onChanged: (text) {
-              setState(() {
-                //searchTerm=searchController.text;
-                searchTerm = text;
-                print(searchTerm);
-              });
-            },
           ),
-        ),
-        //LISTVIEW OF THE RETURNED RESULT
-        Expanded(
-            //padding: const EdgeInsets.symmetric(horizontal: 10),
-            //width: MediaQuery.of(context).size.width,
-            //height: MediaQuery.of(context).size.height * 0.68,
+          //LISTVIEW OF THE RETURNED RESULT
+          Expanded(
             child: FutureBuilder(
                 //This is how you search for a post
                 future: postsModel.getAllPosts(),
@@ -74,63 +66,69 @@ class _SearchViewState extends State<SearchView> {
                           DocumentSnapshot postDocument = posts[index];
 
                           //This takes a post from the database and makes it an instance of post
-                          Post post = Post.fromMap(postDocument.data(), reference: postDocument.reference);
-                          
+                          Post post = Post.fromMap(
+                            postDocument.data(),
+                            reference: postDocument.reference,
+                          );
+
                           //If there is no search-term, display all posts
-                          if(searchTerm=="" || searchTerm==null) {
+                          if (searchTerm == "" || searchTerm == null) {
                             return FutureBuilder(
-                              //This is how you search for a post
-                              future: usersModel.searchUser(post.user),
-                              builder: (context, snapshot) {
-                                print("Building All");
-                                if (snapshot.hasData) {
-                                  List users = snapshot.data.docs;
+                                //This is how you search for a post
+                                future: usersModel.searchUser(post.user),
+                                builder: (context, snapshot) {
+                                  print("Building All");
+                                  if (snapshot.hasData) {
+                                    List users = snapshot.data.docs;
 
-                                  DocumentSnapshot userDocument = users[0];
+                                    DocumentSnapshot userDocument = users[0];
 
-                                  User user = User.fromMap(userDocument.data(),
-                                      reference: postDocument.reference);
+                                    User user = User.fromMap(
+                                      userDocument.data(),
+                                      reference: postDocument.reference,
+                                    );
 
-                                  return PulseCard(post: post, user: user);
-                                } else {
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                              }
-                            );
+                                    return PulseCard(post: post, user: user);
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                });
                           }
                           //if there /is/ a search-term...
                           else {
                             return FutureBuilder(
-                              //This is how you search for a post
-                              future: usersModel.searchUser(post.user),
-                              builder: (context, snapshot) {
-                                print("Building based on Search Term");
-                                if (snapshot.hasData) {
-                                  List users = snapshot.data.docs;
+                                //This is how you search for a post
+                                future: usersModel.searchUser(post.user),
+                                builder: (context, snapshot) {
+                                  print("Building based on Search Term");
+                                  if (snapshot.hasData) {
+                                    List users = snapshot.data.docs;
 
-                                  DocumentSnapshot userDocument = users[0];
+                                    DocumentSnapshot userDocument = users[0];
 
-                                  User user = User.fromMap(userDocument.data(),
-                                      reference: postDocument.reference);
-                                  //... and the post contains a match to the search term
-                                  if(post.content.contains(searchTerm) || post.user.contains(searchTerm)) {
-                                    return PulseCard(post: post, user: user);
-                                  }
-                                  //.. or does not match
-                                  else {
-                                    return Container(
-                                      color: Colors.transparent,
+                                    User user = User.fromMap(
+                                      userDocument.data(),
+                                      reference: postDocument.reference,
+                                    );
+                                    //... and the post contains a match to the search term
+                                    if (post.content.contains(searchTerm) ||
+                                        post.user.contains(searchTerm)) {
+                                      return PulseCard(post: post, user: user);
+                                    }
+                                    //.. or does not match
+                                    else {
+                                      return Container(
+                                        color: Colors.transparent,
+                                      );
+                                    }
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
                                     );
                                   }
-                                } else {
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                              }
-                            );
+                                });
                           }
                         });
                   } else {
@@ -138,8 +136,10 @@ class _SearchViewState extends State<SearchView> {
                       child: CircularProgressIndicator(),
                     );
                   }
-                }))
-      ]),
+                }),
+          )
+        ],
+      ),
     );
   }
 }

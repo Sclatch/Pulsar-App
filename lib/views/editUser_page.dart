@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import '../model/users.dart';
 import '../model/usersModel.dart';
 
@@ -29,11 +30,10 @@ class _EditUserPageState extends State<EditUserPage> {
   void initState() {
     super.initState();
 
-    print('\n\n\n\n\n\n$user');
-    if(user != null) {
+    if (user != null) {
       birthday = user.birthday.toDate();
       description = user.description;
-      if(user.background != null) {
+      if (user.background != null) {
         background = NetworkImage(user.background);
         backgroundLink = user.background;
       }
@@ -41,8 +41,7 @@ class _EditUserPageState extends State<EditUserPage> {
         pfp = NetworkImage(user.image);
         pfpLink = user.image;
       }
-    }
-    else {
+    } else {
       birthday = DateTime.now();
       pfp = null;
       description = null;
@@ -52,7 +51,6 @@ class _EditUserPageState extends State<EditUserPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit User Page"),
@@ -63,39 +61,36 @@ class _EditUserPageState extends State<EditUserPage> {
           child: Column(
             children: <Widget>[
               Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    CircleAvatar(
-                      radius: MediaQuery.of(context).size.width * 0.1,
-                      backgroundColor: Colors.blueGrey,
-                      backgroundImage: pfp,
-                    ),
-                    Container(
-                      width:  MediaQuery.of(context).size.width * 0.65,
-                      child: TextFormField(
-                        style: TextStyle(
-                          fontSize: 18.0,
-                        ),
-                        initialValue: pfpLink,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(width: 0.10),
-                          ),
-                          hintText: "Link to your profile picture",
-                          isDense: true,
-                        ),
-                        maxLines: 1,
-                        //PLEASE WRITE THE FUNCTION HERE FOR IMAGE
-                        onChanged: (value) {
-                          pfpLink = value;
-                        },
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: MediaQuery.of(context).size.width * 0.1,
+                    backgroundColor: Colors.blueGrey,
+                    backgroundImage: pfp,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.65,
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontSize: 18.0,
                       ),
-                    )
-                  ],
-                )
-              ),
-
+                      initialValue: pfpLink,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(width: 0.10),
+                        ),
+                        hintText: "Link to your profile picture",
+                        isDense: true,
+                      ),
+                      maxLines: 1,
+                      onChanged: (value) {
+                        pfpLink = value;
+                      },
+                    ),
+                  )
+                ],
+              )),
               SizedBox(height: 15),
               TextFormField(
                 style: TextStyle(
@@ -123,10 +118,11 @@ class _EditUserPageState extends State<EditUserPage> {
                       padding: const EdgeInsets.all(10),
                       width: MediaQuery.of(context).size.width * 0.60,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.75),
-                        borderRadius: BorderRadius.all(const Radius.circular(5))
-                      ),
-                      child: Text("${birthday.year} / ${birthday.month} / ${birthday.day}",
+                          border: Border.all(color: Colors.grey, width: 0.75),
+                          borderRadius:
+                              BorderRadius.all(const Radius.circular(5))),
+                      child: Text(
+                        "${birthday.year} / ${birthday.month} / ${birthday.day}",
                         textScaleFactor: 1.4,
                       ),
                     ),
@@ -140,7 +136,7 @@ class _EditUserPageState extends State<EditUserPage> {
                       },
                     ),
                   ],
-                )
+                ),
               ),
               SizedBox(height: 15),
               Container(
@@ -148,15 +144,12 @@ class _EditUserPageState extends State<EditUserPage> {
                 height: 175,
                 decoration: BoxDecoration(
                   color: Colors.lightBlue,
-                  image: DecorationImage(
-                    image: background,
-                    fit: BoxFit.cover
-                  )
-                )
+                  image: DecorationImage(image: background, fit: BoxFit.cover),
+                ),
               ),
               Container(
                 padding: const EdgeInsets.only(top: 10),
-                width:  MediaQuery.of(context).size.width * 0.90,
+                width: MediaQuery.of(context).size.width * 0.90,
                 child: TextFormField(
                   style: TextStyle(
                     fontSize: 18.0,
@@ -170,43 +163,39 @@ class _EditUserPageState extends State<EditUserPage> {
                     isDense: true,
                   ),
                   maxLines: 1,
-                  //PLEASE WRITE THE FUNCTION HERE FOR IMAGE
                   onChanged: (value) {
                     backgroundLink = value;
                   },
                 ),
               ),
-
               Container(
                 padding: const EdgeInsets.only(top: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     RaisedButton(
-                      child: Icon(Icons.clear),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }
-                    ),
+                        child: Icon(Icons.clear),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
                     RaisedButton(
-                      child: Icon(Icons.check),
-                      onPressed: () {
-                        Timestamp time = user.dateToTime(birthday);
-                        user.birthday = time;
-                        user.description = description;
-                        user.image = pfpLink;
-                        user.background = backgroundLink;
-                        usersModel.updateUser(user);
+                        child: Icon(Icons.check),
+                        onPressed: () {
+                          Timestamp time = user.dateToTime(birthday);
+                          user.birthday = time;
+                          user.description = description;
+                          user.image = pfpLink;
+                          user.background = backgroundLink;
+                          usersModel.updateUser(user);
 
-                        Navigator.pop(context);
-                      }
-                    )
+                          Navigator.pop(context);
+                        })
                   ],
                 ),
               )
-            ]
-          )
-        )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -219,11 +208,10 @@ class _EditUserPageState extends State<EditUserPage> {
         lastDate: DateTime(2100),
         confirmText: "Ok");
 
-    if(picked != null){
+    if (picked != null) {
       setState(() {
         birthday = picked;
       });
     }
   }
-
 }

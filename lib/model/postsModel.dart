@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'posts.dart';
+import '../model/posts.dart';
 
 class PostsModel {
   Future<void> insertPost(Post post) async {

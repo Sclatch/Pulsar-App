@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:provider/provider.dart';
 
 import '../model/userSettings.dart';
 import '../model/userSettingsModel.dart';
@@ -36,9 +35,6 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //final UserSettingsModel userSettingsModel =
-    //    Provider.of<UserSettingsModel>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -46,7 +42,6 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
       body: Form(
         key: _formKey,
         child: FutureBuilder(
-            //This is how you search for a user
             future: model.getUserSettingsWithId(1),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -116,7 +111,10 @@ class _UpdateUserSettingsWidgetState extends State<UpdateUserSettingsWidget> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 15, top: 15),
+                            padding: EdgeInsets.only(
+                              left: 15,
+                              top: 15,
+                            ),
                             child: Text(
                               "Language:",
                               textAlign: TextAlign.left,

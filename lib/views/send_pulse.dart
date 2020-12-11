@@ -42,13 +42,13 @@ class _SendPulseState extends State<SendPulse> {
     _notifications.init();
 
     GPSEnabled(_geolocator).then((status) {
-      if(status == true) {
+      if (status == true) {
         _geolocator
             .checkGeolocationPermissionStatus()
             .then((GeolocationStatus status) {
           print('Geolocation Status: $status');
         });
-        
+
         _geolocator
             .getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best,
@@ -62,19 +62,18 @@ class _SendPulseState extends State<SendPulse> {
               .then((List<Placemark> place) {
             setState(() {
               address = place[0].subThoroughfare + " " + place[0].thoroughfare;
-              location = GeoPoint(place[0].position.latitude, place[0].position.longitude);
+              location = GeoPoint(
+                  place[0].position.latitude, place[0].position.longitude);
               sendButtonColor = Colors.blue;
             });
           });
         });
-      }
-      else {
+      } else {
         sendButtonColor = Colors.blue;
-        address="Location Disabled";
+        address = "Location Disabled";
       }
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +97,12 @@ class _SendPulseState extends State<SendPulse> {
                     } else {
                       DocumentSnapshot userDocument = snapshot.data.docs[0];
 
-                      user = User.fromMap(userDocument.data(),
-                          reference: userDocument.reference);
+                      user = User.fromMap(
+                        userDocument.data(),
+                        reference: userDocument.reference,
+                      );
                       username = user.username;
-                      if(user.image != null){
+                      if (user.image != null) {
                         pfp = NetworkImage(user.image);
                       }
                     }
@@ -114,10 +115,10 @@ class _SendPulseState extends State<SendPulse> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             CircleAvatar(
-                                radius: 40.0,
-                                backgroundColor: Colors.blueGrey,
-                                backgroundImage: pfp,
-                              ),
+                              radius: 40.0,
+                              backgroundColor: Colors.blueGrey,
+                              backgroundImage: pfp,
+                            ),
                             SizedBox(height: 10),
                             Text("Send a Pulse", textScaleFactor: 1.5),
                             SizedBox(height: 15),
@@ -134,8 +135,6 @@ class _SendPulseState extends State<SendPulse> {
                                 isDense: true,
                               ),
                               maxLines: 4,
-                              //PLEASE WRITE THE FUNCTION HERE TO RETURN THE VALUE
-                              onChanged: (value) {},
                             ),
                             SizedBox(height: 0.5),
                             TextField(
@@ -151,78 +150,80 @@ class _SendPulseState extends State<SendPulse> {
                                 isDense: true,
                               ),
                               maxLines: 1,
-                              //PLEASE WRITE THE FUNCTION HERE FOR IMAGE
-                              onChanged: (value) {},
                             ),
                             //GPS Location
                             Container(
                               padding: const EdgeInsets.only(top: 10),
                               child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(Icons.place),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      "$address",
-                                      textScaleFactor: 1.25,
-                                    )
-                                  ]),
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.place),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    "$address",
+                                    textScaleFactor: 1.25,
+                                  )
+                                ],
+                              ),
                             ),
                             //SEND BUTTON
                             Container(
-                                padding: const EdgeInsets.only(top: 5),
-                                width: 325,
-                                child: RaisedButton(
-                                  color: sendButtonColor, //button color
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.5)
+                              padding: const EdgeInsets.only(top: 5),
+                              width: 325,
+                              child: RaisedButton(
+                                color: sendButtonColor, //button color
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.5),
+                                ),
+                                child: Text(
+                                  "Send",
+                                  style: TextStyle(
+                                    fontSize: 20,
                                   ),
-                                  child: Text(
-                                    "Send",
-                                    style: TextStyle(fontSize: 20,),
-                                  ),
-                                  onPressed: () {
-                                    //if the location data has been obtained
-                                    if (address != "Loading..." && username != null) {
-                                      print("Send something");
-
-
-                                      postsModel.insertPost(
-                                        Post(
-                                          user: username,
-                                          content: pulseTextController.text,
-                                          image: pulseImageURLController.text,
-                                          comments: List(),
-                                          date:
-                                              Timestamp.fromDate(DateTime.now()),
-                                          location: location,
-                                          address: address,
-                                          likes: 0,
-                                          dislikes: 0,
+                                ),
+                                onPressed: () {
+                                  //if the location data has been obtained
+                                  if (address != "Loading..." &&
+                                      username != null) {
+                                    postsModel.insertPost(
+                                      Post(
+                                        user: username,
+                                        content: pulseTextController.text,
+                                        image: pulseImageURLController.text,
+                                        comments: List(),
+                                        date:
+                                            Timestamp.fromDate(DateTime.now()),
+                                        location: location,
+                                        address: address,
+                                        likes: 0,
+                                        dislikes: 0,
+                                      ),
+                                    );
+                                    pulseTextController.text = "";
+                                    pulseImageURLController.text = "";
+                                    _notifications.sendNotificationNow(
+                                        "Post Sent", "", "");
+                                    final snackBar = SnackBar(
+                                      content: Text(
+                                        "Pulse Sent!",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 17,
                                         ),
-                                      );
-                                      pulseTextController.text="";
-                                      pulseImageURLController.text="";
-                                      _notifications.sendNotificationNow(
-                                          "Post Sent", "", "");
-                                      final snackBar = SnackBar(
-                                        content: Text(
-                                          "Pulse Sent!",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 17),
-                                        ),
-                                        backgroundColor: Colors.grey[900],
-                                      );
+                                      ),
+                                      backgroundColor: Colors.grey[900],
+                                    );
 
-                                      Scaffold.of(context)
-                                          .showSnackBar(snackBar);
-                                    }
-                                  },
-                                )),
-                            ],
-                        )));
+                                    Scaffold.of(context).showSnackBar(snackBar);
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   } else {
                     return Center(
                       child: CircularProgressIndicator(),
@@ -240,21 +241,8 @@ class _SendPulseState extends State<SendPulse> {
 
 Future<UserSettings> checkUserSettings() async {
   final userSettingsModel = UserSettingsModel();
-  UserSettings userSettings;
 
-  var _temp = await userSettingsModel.getUserSettingsWithId(1);
-
-  if (_temp == null) {
-    userSettings = UserSettings(fontSize: 14, showImages: true, login: null);
-  } else {
-    userSettings = _temp;
-  }
-
-  userSettings.setID(1);
-
-  userSettingsModel.updateUserSettings(userSettings);
-
-  return userSettings;
+  return await userSettingsModel.getUserSettingsWithId(1);
 }
 
 Future<bool> GPSEnabled(geolocator) async {

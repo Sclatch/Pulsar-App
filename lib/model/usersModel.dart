@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'users.dart';
+import '../model/users.dart';
 
 class UserModel {
   Future<void> insertUser(User user) async {

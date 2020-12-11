@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'comments.dart';
+import '../model/comments.dart';
 
 class CommentsModel {
   Future<DocumentReference> insertComment(Comment comment) async {
